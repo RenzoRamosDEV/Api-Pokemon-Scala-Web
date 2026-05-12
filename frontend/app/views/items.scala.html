@@ -1,0 +1,74 @@
+@(items: List[models.Item], currentPage: Int, totalPages: Int)
+@main("OBJETOS — Pokédex Retro", "objetos") {
+
+  <div class="page-header">
+    <h2 class="page-title">OBJETOS</h2>
+  </div>
+
+  <div class="shop-wrap">
+    <table class="shop-table">
+      <thead>
+        <tr>
+          <th class="shop-th-sprite"></th>
+          <th class="shop-th-name">OBJETO</th>
+          <th class="shop-th-cat">CATEGORÍA</th>
+          <th class="shop-th-price">PRECIO</th>
+          <th class="shop-th-effect">EFECTO</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(item <- items) {
+          <tr class="shop-row">
+            <td class="shop-td-sprite">
+              @item.sprite match {
+                case Some(url) => {
+                  <img src="@url" alt="@item.name" class="shop-sprite">
+                }
+                case None => {
+                  <span class="shop-sprite-missing">?</span>
+                }
+              }
+            </td>
+            <td class="shop-td-name">
+              <span class="shop-item-id">#@item.id</span>
+              <span class="shop-item-name">@item.name.toUpperCase</span>
+            </td>
+            <td class="shop-td-cat">
+              <span class="shop-item-cat">@item.category.toUpperCase</span>
+            </td>
+            <td class="shop-td-price">
+              @if(item.cost == 0) {
+                <span class="shop-price shop-price-free">—</span>
+              } else {
+                <span class="shop-price">@item.cost ₽</span>
+              }
+            </td>
+            <td class="shop-td-effect">
+              @if(item.shortEffect.nonEmpty) {
+                <span class="shop-effect">@item.shortEffect</span>
+              } else {
+                <span class="shop-effect shop-effect-empty">—</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if(totalPages > 1) {
+    <nav class="pagination">
+      @if(currentPage > 1) {
+        <a href="/objetos?page=@{currentPage - 1}" class="page-btn">◀ PREV</a>
+      } else {
+        <span class="page-btn disabled">◀ PREV</span>
+      }
+      <span class="page-info">@currentPage / @totalPages</span>
+      @if(currentPage < totalPages) {
+        <a href="/objetos?page=@{currentPage + 1}" class="page-btn">NEXT ▶</a>
+      } else {
+        <span class="page-btn disabled">NEXT ▶</span>
+      }
+    </nav>
+  }
+}
