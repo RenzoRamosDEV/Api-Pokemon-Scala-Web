@@ -19,13 +19,16 @@ class NaturesController @Inject() (
 
   private val baseUrl = config.get[String]("pokeapi.base-url")
 
-  def index(): Action[AnyContent] = Action.async { implicit request =>
+  def index(q: Option[String]): Action[AnyContent] = Action.async { implicit request =>
     ws.url(s"$baseUrl/api/v2/nature?limit=100").get().flatMap { listResp =>
-      val paginated = listResp.body[String].parseJson.convertTo[PaginatedResponse]
-      val fetches   = paginated.results.map(r => fetchNature(r.name))
-      Future.sequence(fetches).map { opts =>
+      val all      = listResp.body[String].parseJson.convertTo[PaginatedResponse]
+      val filtered = q.map(_.trim).filter(_.nonEmpty) match {
+        case Some(query) => all.results.filter(_.name.contains(query.toLowerCase))
+        case None        => all.results
+      }
+      Future.sequence(filtered.map(r => fetchNature(r.name))).map { opts =>
         val natures = opts.flatten.sortBy(_.id)
-        Ok(views.html.natures(natures))
+        Ok(views.html.natures(natures, q))
       }
     }
   }

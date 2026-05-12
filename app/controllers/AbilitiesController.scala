@@ -20,16 +20,27 @@ class AbilitiesController @Inject() (
   private val baseUrl  = config.get[String]("pokeapi.base-url")
   private val pageSize = 8
 
-  def index(page: Int): Action[AnyContent] = Action.async { implicit request =>
-    val offset = (page - 1) * pageSize
-    ws.url(s"$baseUrl/api/v2/ability?limit=$pageSize&offset=$offset").get().flatMap { listResp =>
-      val paginated  = listResp.body[String].parseJson.convertTo[PaginatedResponse]
-      val totalPages = math.ceil(paginated.count.toDouble / pageSize).toInt
-      val fetches    = paginated.results.map(r => fetchAbility(r.name))
-      Future.sequence(fetches).map { opts =>
-        val abilities = opts.flatten.sortBy(_.id)
-        Ok(views.html.abilities(abilities, page, totalPages))
-      }
+  def index(page: Int, q: Option[String]): Action[AnyContent] = Action.async { implicit request =>
+    q.map(_.trim).filter(_.nonEmpty) match {
+      case Some(query) =>
+        ws.url(s"$baseUrl/api/v2/ability?limit=100000").get().flatMap { listResp =>
+          val all      = listResp.body[String].parseJson.convertTo[PaginatedResponse]
+          val filtered = all.results.filter(_.name.contains(query.toLowerCase))
+          val slice    = filtered.slice((page - 1) * pageSize, page * pageSize)
+          val total    = math.ceil(filtered.size.toDouble / pageSize).toInt
+          Future.sequence(slice.map(r => fetchAbility(r.name))).map { opts =>
+            Ok(views.html.abilities(opts.flatten.sortBy(_.id), page, total, q))
+          }
+        }
+      case None =>
+        val offset = (page - 1) * pageSize
+        ws.url(s"$baseUrl/api/v2/ability?limit=$pageSize&offset=$offset").get().flatMap { listResp =>
+          val paginated  = listResp.body[String].parseJson.convertTo[PaginatedResponse]
+          val totalPages = math.ceil(paginated.count.toDouble / pageSize).toInt
+          Future.sequence(paginated.results.map(r => fetchAbility(r.name))).map { opts =>
+            Ok(views.html.abilities(opts.flatten.sortBy(_.id), page, totalPages, None))
+          }
+        }
     }
   }
 
