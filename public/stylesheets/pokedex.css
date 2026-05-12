@@ -1368,9 +1368,6 @@ body {
   .move-stats { grid-template-columns: repeat(2, 1fr); }
 }
 
-body.section-movimientos {
-  overflow: hidden;
-}
 
 /* ═══════════════════════════════════════════════════
    BOTÓN TEMA GAME BOY DMG-01
