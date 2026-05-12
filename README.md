@@ -4,12 +4,6 @@ Pokédex interactiva con estética retro inspirada en la Game Boy original (DMG-
 
 ---
 
-## Capturas
-
-> Tema normal · Tema DMG (Game Boy verde) · Tema MONO (gris)
-
----
-
 ## Características
 
 - **7 secciones**: Pokédex, Movimientos, Tipos, Habilidades, Naturalezas, Objetos y Bayas
@@ -127,8 +121,6 @@ public/
 | Normal | NORMAL | Rojo Pokédex clásico sobre fondo verde oscuro |
 | DMG | DMG | Paleta monocromática verde LCD de la Game Boy original |
 | MONO | MONO | Escala de grises inspirada en la Game Boy Pocket |
-
-El tema elegido se guarda en `localStorage` y persiste entre páginas.
 
 ---
 
