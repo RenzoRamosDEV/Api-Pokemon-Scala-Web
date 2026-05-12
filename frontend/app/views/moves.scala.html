@@ -1,0 +1,57 @@
+@(moves: List[models.Move], currentPage: Int, totalPages: Int)
+@main("MOVIMIENTOS — Pokédex Retro", "movimientos") {
+
+  <div class="page-header">
+    <h2 class="page-title">MOVIMIENTOS</h2>
+  </div>
+
+  <div class="moves-grid">
+    @for(move <- moves) {
+      <div class="move-card">
+        <div class="move-card-top">
+          <span class="move-id">#@move.id</span>
+          <span class="type-badge type-@move.moveType">@move.moveType.toUpperCase</span>
+          <span class="damage-class @move.damageClass">@move.damageClass.toUpperCase</span>
+        </div>
+        <h3 class="move-name">@move.name.toUpperCase</h3>
+        <div class="move-stats">
+          <div class="move-stat">
+            <span class="move-stat-label">POW</span>
+            <span class="move-stat-value">@move.power.getOrElse("—")</span>
+          </div>
+          <div class="move-stat">
+            <span class="move-stat-label">ACC</span>
+            <span class="move-stat-value">@move.accuracy.getOrElse("—")</span>
+          </div>
+          <div class="move-stat">
+            <span class="move-stat-label">PP</span>
+            <span class="move-stat-value">@move.pp</span>
+          </div>
+          <div class="move-stat">
+            <span class="move-stat-label">PRI</span>
+            <span class="move-stat-value">@move.priority</span>
+          </div>
+        </div>
+        @if(move.shortEffect.nonEmpty) {
+          <p class="move-effect">@move.shortEffect</p>
+        }
+      </div>
+    }
+  </div>
+
+  @if(totalPages > 1) {
+    <nav class="pagination">
+      @if(currentPage > 1) {
+        <a href="/movimientos?page=@{currentPage - 1}" class="page-btn">◀ PREV</a>
+      } else {
+        <span class="page-btn disabled">◀ PREV</span>
+      }
+      <span class="page-info">@currentPage / @totalPages</span>
+      @if(currentPage < totalPages) {
+        <a href="/movimientos?page=@{currentPage + 1}" class="page-btn">NEXT ▶</a>
+      } else {
+        <span class="page-btn disabled">NEXT ▶</span>
+      }
+    </nav>
+  }
+}
