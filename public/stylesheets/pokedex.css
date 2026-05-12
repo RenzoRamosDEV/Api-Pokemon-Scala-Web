@@ -1668,6 +1668,7 @@ body:has(#gb-toggle:checked) .flavor-sour        { background: #306230; }
 /* Items (shop) */
 body:has(#gb-toggle:checked) .shop-table { border-color: #0f380f; box-shadow: 4px 4px 0 #0f380f; }
 body:has(#gb-toggle:checked) .shop-table thead { background: #0f380f; }
+body:has(#gb-toggle:checked) .shop-table th { color: #9bbc0f; }
 body:has(#gb-toggle:checked) .shop-row { background: #8bac0f; border-bottom-color: rgba(15,56,15,0.15); }
 body:has(#gb-toggle:checked) .shop-row:nth-child(even) { background: #9bbc0f; }
 body:has(#gb-toggle:checked) .shop-row:hover { background: #a8cc10; }
