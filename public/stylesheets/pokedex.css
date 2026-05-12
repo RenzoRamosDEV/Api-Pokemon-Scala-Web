@@ -1713,3 +1713,34 @@ body:has(#gb-toggle:checked) .eff-0-cell    { background: #306230; color: #0f380
 body:has(#gb-toggle:checked) .eff-1-cell    { background: #8bac0f; color: transparent; }
 body:has(#gb-toggle:checked) .eff-2-cell    { background: #0f380f; color: #9bbc0f; }
 body:has(#gb-toggle:checked) .eff-h-cell    { background: #5a7a3a; color: #8bac0f; }
+
+/* Type badges — todos en paleta GB */
+body:has(#gb-toggle:checked) .type-normal,
+body:has(#gb-toggle:checked) .type-fire,
+body:has(#gb-toggle:checked) .type-water,
+body:has(#gb-toggle:checked) .type-electric,
+body:has(#gb-toggle:checked) .type-grass,
+body:has(#gb-toggle:checked) .type-ice,
+body:has(#gb-toggle:checked) .type-fighting,
+body:has(#gb-toggle:checked) .type-poison,
+body:has(#gb-toggle:checked) .type-ground,
+body:has(#gb-toggle:checked) .type-flying,
+body:has(#gb-toggle:checked) .type-psychic,
+body:has(#gb-toggle:checked) .type-bug,
+body:has(#gb-toggle:checked) .type-rock,
+body:has(#gb-toggle:checked) .type-ghost,
+body:has(#gb-toggle:checked) .type-dragon,
+body:has(#gb-toggle:checked) .type-dark,
+body:has(#gb-toggle:checked) .type-steel,
+body:has(#gb-toggle:checked) .type-fairy    { background: #306230; color: #9bbc0f; border-color: #0f380f; text-shadow: none; }
+
+/* Stat bar fills — todos en verde oscuro */
+body:has(#gb-toggle:checked) .stat-bar-fill { background: #306230 !important; opacity: 1; }
+
+/* Page header border */
+body:has(#gb-toggle:checked) .page-header { border-bottom-color: #0f380f; }
+
+/* Logo dots */
+body:has(#gb-toggle:checked) .logo-dot.red,
+body:has(#gb-toggle:checked) .logo-dot.yellow,
+body:has(#gb-toggle:checked) .logo-dot.green  { background: #306230; box-shadow: none; border-color: #0f380f; }
