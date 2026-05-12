@@ -387,7 +387,7 @@ body {
 
 .section-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   color: var(--red-dark);
   border-bottom: 2px solid var(--black);
   padding-bottom: 4px;
@@ -403,7 +403,7 @@ body {
 
 .data-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   color: #555;
   padding: 5px 8px 5px 0;
   width: 55%;
@@ -448,14 +448,14 @@ body {
 
 .stat-row {
   display: grid;
-  grid-template-columns: 52px 36px 1fr;
+  grid-template-columns: 80px 36px 1fr;
   align-items: center;
   gap: 6px;
 }
 
 .stat-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.32rem;
+  font-size: 0.5rem;
   color: #555;
   text-align: right;
 }
@@ -564,7 +564,7 @@ body {
 
   .modal-types { flex-direction: row; }
 
-  .stat-label { font-size: 0.28rem; }
+  .stat-label { font-size: 0.45rem; }
 }
 
 @media (max-width: 400px) {
