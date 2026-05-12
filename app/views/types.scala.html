@@ -35,13 +35,13 @@
               <span class="type-badge type-@atkType.name">@atkType.name.toUpperCase</span>
             </td>
             @for(defType <- types) {
-              @defining {
+              @defining(
                 if      (atkType.doubleDamageTo.contains(defType.name)) "2x"
                 else if (atkType.halfDamageTo.contains(defType.name))   "half"
                 else if (atkType.noDamageTo.contains(defType.name))     "0"
                 else                                                     "1"
-              } { eff =>
-                <td class="matrix-cell eff-@eff-cell">
+              ) { eff =>
+                <td class="matrix-cell eff-@{eff}-cell">
                   @if(eff == "2x"){ ×2 }
                   @if(eff == "half"){ ½ }
                   @if(eff == "0"){ ✕ }

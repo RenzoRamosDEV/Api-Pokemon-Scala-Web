@@ -61,18 +61,20 @@
 
         <section class="modal-section">
           <h3 class="section-title">BASE STATS</h3>
-          <div class="stats-list">
-            @for(s <- pokemon.stats) {
-              <div class="stat-row">
-                <span class="stat-label">@s.name.toUpperCase</span>
-                <span class="stat-value">@s.baseStat</span>
-                <div class="stat-bar-track">
-                  <div class="stat-bar-fill type-@pokemon.types.headOption.map(_.typeName).getOrElse("normal")"
-                       style="width: @Math.min(s.baseStat, 100)%"></div>
+          @defining(pokemon.types.headOption.map(_.typeName).getOrElse("normal")) { primaryType =>
+            <div class="stats-list">
+              @for(s <- pokemon.stats) {
+                <div class="stat-row">
+                  <span class="stat-label">@s.name.toUpperCase</span>
+                  <span class="stat-value">@s.baseStat</span>
+                  <div class="stat-bar-track">
+                    <div class="stat-bar-fill type-@primaryType"
+                         style="width: @{Math.min(s.baseStat, 100)}%"></div>
+                  </div>
                 </div>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          }
         </section>
       </div>
     </div>
