@@ -1,8 +1,12 @@
-@(items: List[models.Item], currentPage: Int, totalPages: Int)
+@(items: List[models.Item], currentPage: Int, totalPages: Int, q: Option[String])
 @main("OBJETOS — Pokédex Retro", "objetos") {
 
   <div class="page-header">
     <h2 class="page-title">OBJETOS</h2>
+    <form class="search-form" method="GET" action="/objetos">
+      <input class="search-input" type="text" name="q" placeholder="BUSCAR..." value="@q.getOrElse("")" autocomplete="off">
+      <button class="search-btn" type="submit">▶</button>
+    </form>
   </div>
 
   <div class="shop-wrap">
@@ -59,13 +63,13 @@
   @if(totalPages > 1) {
     <nav class="pagination">
       @if(currentPage > 1) {
-        <a href="/objetos?page=@{currentPage - 1}" class="page-btn">◀ PREV</a>
+        <a href="/objetos?page=@{currentPage - 1}@q.map(v => s"&q=$v").getOrElse("")" class="page-btn">◀ PREV</a>
       } else {
         <span class="page-btn disabled">◀ PREV</span>
       }
       <span class="page-info">@currentPage / @totalPages</span>
       @if(currentPage < totalPages) {
-        <a href="/objetos?page=@{currentPage + 1}" class="page-btn">NEXT ▶</a>
+        <a href="/objetos?page=@{currentPage + 1}@q.map(v => s"&q=$v").getOrElse("")" class="page-btn">NEXT ▶</a>
       } else {
         <span class="page-btn disabled">NEXT ▶</span>
       }
