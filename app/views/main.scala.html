@@ -53,7 +53,14 @@
         <span></span>
         <span></span>
       </label>
-      <button id="theme-btn" class="theme-cycle-btn" title="Cambiar tema"></button>
+      <div class="theme-picker-wrap">
+        <button id="theme-btn" class="theme-cycle-btn" title="Cambiar tema"></button>
+        <div id="theme-dropdown" class="theme-dropdown" hidden>
+          <button class="theme-option" data-value="normal">NORMAL</button>
+          <button class="theme-option" data-value="gb">DMG</button>
+          <button class="theme-option" data-value="gray">MONO</button>
+        </div>
+      </div>
       <h1 class="site-title"><a href="/" class="site-title-link">POKEDEX</a></h1>
       <div class="header-badge">RENZO RAMOS</div>
     </div>
@@ -75,25 +82,34 @@
 
   <script>
     (function() {
-      var themes = ['normal', 'gb', 'gray'];
-      var labels = { normal: 'NORMAL', gb: 'DMG', gray: 'MONO' };
-      var btn = document.getElementById('theme-btn');
-      var current = localStorage.getItem('theme') || 'normal';
+      var labels   = { normal: 'NORMAL', gb: 'DMG', gray: 'MONO' };
+      var btn      = document.getElementById('theme-btn');
+      var dropdown = document.getElementById('theme-dropdown');
+      var current  = localStorage.getItem('theme') || 'normal';
 
       function applyTheme(t) {
         document.body.dataset.theme = t;
         btn.textContent = labels[t];
-        btn.dataset.theme = t;
-        localStorage.setItem('theme', t);
         current = t;
+        localStorage.setItem('theme', t);
+        dropdown.hidden = true;
+        document.querySelectorAll('.theme-option').forEach(function(o) {
+          o.classList.toggle('active', o.dataset.value === t);
+        });
       }
 
       applyTheme(current);
 
-      btn.addEventListener('click', function() {
-        var next = themes[(themes.indexOf(current) + 1) % themes.length];
-        applyTheme(next);
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.hidden = !dropdown.hidden;
       });
+
+      document.querySelectorAll('.theme-option').forEach(function(o) {
+        o.addEventListener('click', function() { applyTheme(o.dataset.value); });
+      });
+
+      document.addEventListener('click', function() { dropdown.hidden = true; });
     })();
   </script>
 </body>

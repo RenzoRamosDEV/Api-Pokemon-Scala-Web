@@ -1405,16 +1405,61 @@ body {
 }
 
 /* Estado DMG */
-body[data-theme="gb"] .theme-cycle-btn {
-  color: #9bbc0f;
-  border-color: #9bbc0f;
+body[data-theme="gb"] .theme-cycle-btn   { color: #9bbc0f; border-color: #9bbc0f; }
+/* Estado MONO */
+body[data-theme="gray"] .theme-cycle-btn { color: #aaa;    border-color: #aaa; }
+
+/* Dropdown */
+.theme-picker-wrap {
+  position: relative;
+  flex-shrink: 0;
 }
 
-/* Estado MONO */
-body[data-theme="gray"] .theme-cycle-btn {
-  color: #aaa;
-  border-color: #aaa;
+.theme-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--black);
+  border: 3px solid var(--black);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.6);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  min-width: 80px;
 }
+
+.theme-dropdown[hidden] { display: none; }
+
+.theme-option {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  background: transparent;
+  color: #aaa;
+  border: none;
+  border-bottom: 1px solid #222;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  letter-spacing: 1px;
+  transition: background 80ms, color 80ms;
+  white-space: nowrap;
+}
+
+.theme-option:last-child { border-bottom: none; }
+.theme-option:hover      { background: #1a1a1a; color: #fff; }
+.theme-option.active     { color: var(--yellow); }
+
+/* Dropdown en tema GB */
+body[data-theme="gb"] .theme-dropdown   { background: #0f380f; border-color: #0f380f; }
+body[data-theme="gb"] .theme-option     { color: #8bac0f; border-bottom-color: #1a4a1a; }
+body[data-theme="gb"] .theme-option:hover { background: #1a4a1a; color: #9bbc0f; }
+body[data-theme="gb"] .theme-option.active { color: #9bbc0f; }
+
+/* Dropdown en tema MONO */
+body[data-theme="gray"] .theme-dropdown   { background: #222; border-color: #111; }
+body[data-theme="gray"] .theme-option     { color: #aaa; border-bottom-color: #333; }
+body[data-theme="gray"] .theme-option:hover { background: #333; color: #eee; }
+body[data-theme="gray"] .theme-option.active { color: #eee; }
 
 /* ═══════════════════════════════════════════════════
    TEMA GAME BOY DMG-01
