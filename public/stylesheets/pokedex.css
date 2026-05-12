@@ -1459,6 +1459,50 @@ body[data-theme="gray"] .theme-option     { color: #aaa; border-bottom-color: #3
 body[data-theme="gray"] .theme-option:hover { background: #333; color: #eee; }
 body[data-theme="gray"] .theme-option.active { color: #eee; }
 
+/* Info wrap */
+.info-wrap { position: relative; flex-shrink: 0; }
+
+.info-panel { min-width: 180px; padding: 0; }
+
+.info-row {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.38rem;
+  padding: 8px 12px;
+  border-bottom: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: #aaa;
+}
+
+.info-row:last-child { border-bottom: none; }
+
+.info-title {
+  font-size: 0.42rem;
+  color: var(--yellow);
+  justify-content: center;
+  background: #111;
+  letter-spacing: 1px;
+}
+
+.info-label { color: #666; }
+.info-value { color: #eee; text-align: right; }
+
+/* Info en tema GB */
+body[data-theme="gb"] .info-panel        { background: #0f380f; border-color: #0f380f; }
+body[data-theme="gb"] .info-row          { border-bottom-color: #1a4a1a; color: #8bac0f; }
+body[data-theme="gb"] .info-title        { background: #000; color: #9bbc0f; }
+body[data-theme="gb"] .info-label        { color: #306230; }
+body[data-theme="gb"] .info-value        { color: #9bbc0f; }
+
+/* Info en tema MONO */
+body[data-theme="gray"] .info-panel      { background: #222; border-color: #111; }
+body[data-theme="gray"] .info-row        { border-bottom-color: #333; color: #aaa; }
+body[data-theme="gray"] .info-title      { background: #111; color: #eee; }
+body[data-theme="gray"] .info-label      { color: #666; }
+body[data-theme="gray"] .info-value      { color: #eee; }
+
 /* ═══════════════════════════════════════════════════
    TEMA GAME BOY DMG-01
    Paleta LCD original: #9bbc0f · #8bac0f · #306230 · #0f380f
