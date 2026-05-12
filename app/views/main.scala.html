@@ -46,10 +46,6 @@
   <header class="site-header">
     <!-- Checkbox hack para menú sin JS -->
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
-    <!-- Checkbox hack para tema Game Boy DMG-01 -->
-    <input type="checkbox" id="gb-toggle" class="gb-toggle-input" aria-hidden="true">
-    <!-- Checkbox hack para tema monocromático gris -->
-    <input type="checkbox" id="gray-toggle" class="gb-toggle-input" aria-hidden="true">
 
     <div class="header-inner">
       <label for="nav-toggle" class="hamburger" aria-label="Abrir menú">
@@ -57,8 +53,7 @@
         <span></span>
         <span></span>
       </label>
-      <label for="gb-toggle" class="gb-toggle-btn" title="Modo Game Boy DMG-01">DMG</label>
-      <label for="gray-toggle" class="gray-toggle-btn" title="Modo monocromático gris">MONO</label>
+      <button id="theme-btn" class="theme-cycle-btn" title="Cambiar tema"></button>
       <h1 class="site-title"><a href="/" class="site-title-link">POKEDEX</a></h1>
       <div class="header-badge">RENZO RAMOS</div>
     </div>
@@ -80,20 +75,24 @@
 
   <script>
     (function() {
-      var gb   = document.getElementById('gb-toggle');
-      var gray = document.getElementById('gray-toggle');
+      var themes = ['normal', 'gb', 'gray'];
+      var labels = { normal: 'NORMAL', gb: 'DMG', gray: 'MONO' };
+      var btn = document.getElementById('theme-btn');
+      var current = localStorage.getItem('theme') || 'normal';
 
-      var active = localStorage.getItem('theme');
-      if (active === 'gb')   gb.checked   = true;
-      if (active === 'gray') gray.checked = true;
+      function applyTheme(t) {
+        document.body.dataset.theme = t;
+        btn.textContent = labels[t];
+        btn.dataset.theme = t;
+        localStorage.setItem('theme', t);
+        current = t;
+      }
 
-      gb.addEventListener('change', function() {
-        if (gb.checked) { gray.checked = false; localStorage.setItem('theme', 'gb'); }
-        else            { localStorage.removeItem('theme'); }
-      });
-      gray.addEventListener('change', function() {
-        if (gray.checked) { gb.checked = false; localStorage.setItem('theme', 'gray'); }
-        else              { localStorage.removeItem('theme'); }
+      applyTheme(current);
+
+      btn.addEventListener('click', function() {
+        var next = themes[(themes.indexOf(current) + 1) % themes.length];
+        applyTheme(next);
       });
     })();
   </script>
