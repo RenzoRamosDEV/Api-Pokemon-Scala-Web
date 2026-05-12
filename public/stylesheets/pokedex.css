@@ -1682,6 +1682,7 @@ body:has(#gb-toggle:checked) .shop-sprite-missing { color: #306230; }
 
 /* Natures accordion */
 body:has(#gb-toggle:checked) .acc-section  { border-color: #0f380f; box-shadow: 4px 4px 0 #0f380f; }
+body:has(#gb-toggle:checked) .acc-header[style] { border-left-color: #306230 !important; }
 body:has(#gb-toggle:checked) .acc-header   { background: #0f380f; }
 body:has(#gb-toggle:checked) .acc-stat-name { color: #9bbc0f; }
 body:has(#gb-toggle:checked) .acc-count-up   { color: #9bbc0f; }
