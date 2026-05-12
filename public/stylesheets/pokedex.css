@@ -1622,9 +1622,9 @@ body:has(#gb-toggle:checked) .move-stat {
 body:has(#gb-toggle:checked) .move-stat-label { color: #306230; }
 body:has(#gb-toggle:checked) .move-stat-value { color: #0f380f; }
 
-body:has(#gb-toggle:checked) .damage-class.physical { background: #306230; }
-body:has(#gb-toggle:checked) .damage-class.special  { background: #1a4a1a; }
-body:has(#gb-toggle:checked) .damage-class.status   { background: #5a7a3a; }
+body:has(#gb-toggle:checked) .damage-class.physical { background: #306230; color: #9bbc0f; }
+body:has(#gb-toggle:checked) .damage-class.special  { background: #1a4a1a; color: #9bbc0f; }
+body:has(#gb-toggle:checked) .damage-class.status   { background: #5a7a3a; color: #9bbc0f; }
 
 /* Abilities */
 body:has(#gb-toggle:checked) .ability-card {
