@@ -1658,12 +1658,12 @@ body:has(#gb-toggle:checked) .berry-stat         { background: rgba(15,56,15,0.0
 body:has(#gb-toggle:checked) .berry-stat-label   { color: #306230; }
 body:has(#gb-toggle:checked) .berry-stat-value   { color: #0f380f; }
 body:has(#gb-toggle:checked) .berry-flavors      { border-top-color: rgba(15,56,15,0.18); }
-body:has(#gb-toggle:checked) .berry-flavor       { background: #306230; border-color: #0f380f; }
+body:has(#gb-toggle:checked) .berry-flavor       { background: #306230; border-color: #0f380f; color: #9bbc0f; }
 body:has(#gb-toggle:checked) .flavor-spicy,
 body:has(#gb-toggle:checked) .flavor-dry,
 body:has(#gb-toggle:checked) .flavor-sweet,
 body:has(#gb-toggle:checked) .flavor-bitter,
-body:has(#gb-toggle:checked) .flavor-sour        { background: #306230; }
+body:has(#gb-toggle:checked) .flavor-sour        { background: #306230; color: #9bbc0f; }
 
 /* Items (shop) */
 body:has(#gb-toggle:checked) .shop-table { border-color: #0f380f; box-shadow: 4px 4px 0 #0f380f; }
