@@ -1,0 +1,29 @@
+@(pokemons: List[models.Pokemon], currentPage: Int, totalPages: Int)
+@main("POKÉDEX — Retro Edition", "pokedex") {
+
+  <div class="pokedex-grid">
+    @for(pokemon <- pokemons) {
+      @_card(pokemon)
+    }
+  </div>
+
+  @if(totalPages > 1) {
+    <nav class="pagination">
+      @if(currentPage > 1) {
+        <a href="?page=@{currentPage - 1}" class="page-btn">◀ PREV</a>
+      } else {
+        <span class="page-btn disabled">◀ PREV</span>
+      }
+      <span class="page-info">@currentPage / @totalPages</span>
+      @if(currentPage < totalPages) {
+        <a href="?page=@{currentPage + 1}" class="page-btn">NEXT ▶</a>
+      } else {
+        <span class="page-btn disabled">NEXT ▶</span>
+      }
+    </nav>
+  }
+
+  @for(pokemon <- pokemons) {
+    @_modal(pokemon)
+  }
+}
