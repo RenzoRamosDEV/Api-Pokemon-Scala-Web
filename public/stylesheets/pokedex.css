@@ -1379,18 +1379,20 @@ body {
   background: transparent;
   color: rgba(255,255,255,0.8);
   border: 2px solid rgba(255,255,255,0.4);
-  padding: 0 8px;
-  width: 52px;
+  padding: 4px;
+  width: 36px;
   height: 36px;
   cursor: pointer;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   flex-shrink: 0;
   transition: background 80ms, color 80ms, border-color 80ms;
   box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
-  line-height: 1;
+  line-height: 1.3;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  word-break: break-all;
 }
 
 .theme-cycle-btn:hover {
