@@ -1,0 +1,79 @@
+@(title: String, section: String)(content: Html)
+<!DOCTYPE html>
+<html lang="es" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@title</title>
+
+  <!-- SEO primario -->
+  <meta name="description" content="Pokédex retro interactiva. Explora los Pokémon con estética de consola clásica de los 90: stats, tipos, habilidades y cadenas evolutivas.">
+  <meta name="keywords" content="pokedex, pokemon, retro, stats, tipos, habilidades, pokeapi">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#cc2200">
+  <link rel="canonical" href="/">
+
+  <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pokédex Retro">
+  <meta property="og:title" content="@title">
+  <meta property="og:description" content="Explora los Pokémon con estética de consola clásica de los 90. Stats, tipos, habilidades y más.">
+  <meta property="og:image" content="@routes.Assets.versioned("images/logo-pokeball.png")">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="400">
+  <meta property="og:image:height" content="400">
+  <meta property="og:image:alt" content="Pokébola — Pokédex Retro">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="@title">
+  <meta name="twitter:description" content="Explora los Pokémon con estética de consola clásica de los 90. Stats, tipos, habilidades y más.">
+  <meta name="twitter:image" content="@routes.Assets.versioned("images/logo-pokeball.png")">
+  <meta name="twitter:image:alt" content="Pokébola — Pokédex Retro">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="@routes.Assets.versioned("images/logo-pokeball.png")">
+  <link rel="icon" type="image/png" sizes="16x16" href="@routes.Assets.versioned("images/logo-pokeball.png")">
+  <link rel="apple-touch-icon" sizes="180x180" href="@routes.Assets.versioned("images/logo-pokeball.png")">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/pokedex.css")">
+</head>
+<body class="section-@section">
+  <header class="site-header">
+    <!-- Checkbox hack para menú sin JS -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+
+    <div class="header-inner">
+      <label for="nav-toggle" class="hamburger" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+      <h1 class="site-title"><a href="/" class="site-title-link">POKEDEX</a></h1>
+      <div class="header-badge">RENZO RAMOS</div>
+    </div>
+
+    <nav class="nav-menu" aria-label="Navegación principal">
+      <a href="/"             class="nav-link @if(section == "pokedex"){active}">POKEDEX</a>
+      <a href="/movimientos"  class="nav-link @if(section == "movimientos"){active}">MOVIMIENTOS</a>
+      <a href="/tipos"        class="nav-link @if(section == "tipos"){active}">TIPOS</a>
+      <a href="/habilidades"  class="nav-link @if(section == "habilidades"){active}">HABILIDADES</a>
+      <a href="/naturalezas"  class="nav-link @if(section == "naturalezas"){active}">NATURALEZAS</a>
+      <a href="/objetos"      class="nav-link @if(section == "objetos"){active}">OBJETOS</a>
+      <a href="/bayas"        class="nav-link @if(section == "bayas"){active}">BAYAS</a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    @content
+  </main>
+
+  <footer class="site-footer">
+    <p>© RENZO RAMOS — POWERED BY POKEAPI</p>
+  </footer>
+</body>
+</html>
