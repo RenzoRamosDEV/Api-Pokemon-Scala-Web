@@ -1,0 +1,80 @@
+@(pokemon: models.Pokemon)
+<div id="pokemon-@pokemon.id" class="modal" role="dialog" aria-modal="true" aria-label="@pokemon.name">
+  <div class="modal-backdrop">
+    <a href="#" class="modal-close-area" aria-label="Cerrar"></a>
+  </div>
+  <div class="modal-panel">
+    <a href="#" class="modal-close" aria-label="Cerrar">✕</a>
+
+    <div class="modal-header">
+      <span class="modal-number">#@pokemon.id</span>
+      <h2 class="modal-name">@pokemon.name.toUpperCase</h2>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-sprite-col">
+        @pokemon.sprites.frontDefault match {
+          case Some(url) => {
+            <img src="@url" alt="@pokemon.name" class="modal-sprite">
+          }
+          case None => {
+            <div class="modal-sprite-missing">?</div>
+          }
+        }
+        <div class="modal-types">
+          @for(t <- pokemon.types.sortBy(_.slot)) {
+            <span class="type-badge type-@t.typeName">@t.typeName.toUpperCase</span>
+          }
+        </div>
+      </div>
+
+      <div class="modal-data-col">
+        <section class="modal-section">
+          <h3 class="section-title">INFO</h3>
+          <table class="data-table">
+            <tr>
+              <td class="data-label">HEIGHT</td>
+              <td class="data-value">@(pokemon.height.toDouble / 10) m</td>
+            </tr>
+            <tr>
+              <td class="data-label">WEIGHT</td>
+              <td class="data-value">@(pokemon.weight.toDouble / 10) kg</td>
+            </tr>
+            <tr>
+              <td class="data-label">BASE EXP</td>
+              <td class="data-value">@pokemon.baseExperience.getOrElse("—")</td>
+            </tr>
+          </table>
+        </section>
+
+        <section class="modal-section">
+          <h3 class="section-title">ABILITIES</h3>
+          <ul class="ability-list">
+            @for(a <- pokemon.abilities.sortBy(_.slot)) {
+              <li class="ability-item @if(a.isHidden){hidden}">
+                @a.name.toUpperCase
+                @if(a.isHidden){ <span class="hidden-tag">HIDDEN</span> }
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="modal-section">
+          <h3 class="section-title">BASE STATS</h3>
+          <div class="stats-list">
+            @for(s <- pokemon.stats) {
+              <div class="stat-row">
+                <span class="stat-label">@s.name.toUpperCase</span>
+                <span class="stat-value">@s.baseStat</span>
+                <div class="stat-bar-track">
+                  <div class="stat-bar-fill type-@pokemon.types.headOption.map(_.typeName).getOrElse("normal")"
+                       style="width: @Math.min(s.baseStat, 100)%"></div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
