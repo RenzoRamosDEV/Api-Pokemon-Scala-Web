@@ -1,6 +1,10 @@
 @(pokemons: List[models.Pokemon], currentPage: Int, totalPages: Int)
 @main("POKÉDEX — Retro Edition", "pokedex") {
 
+  <div class="page-header">
+    <h2 class="page-title">POKÉDEX</h2>
+  </div>
+
   <div class="pokedex-grid">
     @for(pokemon <- pokemons) {
       @_card(pokemon)
