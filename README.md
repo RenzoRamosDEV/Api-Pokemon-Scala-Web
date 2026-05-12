@@ -124,6 +124,36 @@ public/
 
 ---
 
+## Capturas de pantalla
+
+### Pokédex principal
+![Pokédex tema rojo](public/images/pokedex-tema-rojo.png)
+
+### Temas visuales
+| DMG (Game Boy verde) | MONO (escala de grises) |
+|---|---|
+| ![Tema verde](public/images/pokedex-tema-verde.png) | ![Tema gris](public/images/pokedex-tema-gris.png) |
+
+### Movimientos
+![Movimientos](public/images/movimientos.png)
+
+### Tabla de tipos
+![Tabla de tipos](public/images/tabla-de-tipos.png)
+
+### Habilidades
+![Habilidades](public/images/habilidades.png)
+
+### Naturalezas
+![Naturalezas](public/images/naturalezas.png)
+
+### Objetos
+![Objetos](public/images/objetos.png)
+
+### Bayas
+![Bayas](public/images/bayas.png)
+
+---
+
 ## Autor
 
 **Renzo Ramos** — [GitHub](https://github.com/RenzoRamosDEV)
