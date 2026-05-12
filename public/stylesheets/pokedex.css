@@ -1371,3 +1371,345 @@ body {
 body.section-movimientos {
   overflow: hidden;
 }
+
+/* ═══════════════════════════════════════════════════
+   BOTÓN TEMA GAME BOY DMG-01
+   ═══════════════════════════════════════════════════ */
+
+.gb-toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.gb-toggle-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  background: #1a1a1a;
+  color: #9bbc0f;
+  border: 2px solid #9bbc0f;
+  padding: 5px 7px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  user-select: none;
+  transition: background 80ms, color 80ms;
+  box-shadow: 2px 2px 0 #000;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.gb-toggle-btn:hover {
+  background: #9bbc0f;
+  color: #0f380f;
+}
+
+/* Cuando está activo, el botón se ve presionado */
+body:has(#gb-toggle:checked) .gb-toggle-btn {
+  background: #9bbc0f;
+  color: #0f380f;
+  box-shadow: 0 0 0 #000;
+  transform: translate(2px, 2px);
+}
+
+/* ═══════════════════════════════════════════════════
+   TEMA GAME BOY DMG-01
+   Paleta LCD original: #9bbc0f · #8bac0f · #306230 · #0f380f
+   ═══════════════════════════════════════════════════ */
+
+body:has(#gb-toggle:checked) {
+  background-color: #9bbc0f;
+  background-image:
+    linear-gradient(rgba(15,56,15,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15,56,15,0.12) 1px, transparent 1px);
+  background-size: 8px 8px;
+  color: #0f380f;
+  image-rendering: pixelated;
+}
+
+/* Header */
+body:has(#gb-toggle:checked) .site-header {
+  background: #0f380f;
+  border-bottom: 4px solid #000;
+  box-shadow: 0 4px 0 #000;
+}
+
+body:has(#gb-toggle:checked) .hamburger {
+  border-color: rgba(155,188,15,0.5);
+}
+
+body:has(#gb-toggle:checked) .hamburger span {
+  background: #9bbc0f;
+}
+
+body:has(#gb-toggle:checked) .site-title {
+  color: #9bbc0f;
+  text-shadow: 2px 2px 0 #000;
+}
+
+body:has(#gb-toggle:checked) .site-title-link { color: inherit; }
+
+body:has(#gb-toggle:checked) .header-badge {
+  background: #306230;
+  color: #9bbc0f;
+  border-color: #000;
+}
+
+/* Nav menu */
+body:has(#gb-toggle:checked) .nav-menu {
+  background: #0f380f;
+  border-bottom-color: #306230;
+}
+
+body:has(#gb-toggle:checked) .nav-link { color: #8bac0f; }
+body:has(#gb-toggle:checked) .nav-link:hover { background: #1a4a1a; color: #9bbc0f; }
+body:has(#gb-toggle:checked) .nav-link.active { color: #9bbc0f; border-left-color: #306230; }
+
+/* Page header */
+body:has(#gb-toggle:checked) .page-header {
+  border-bottom-color: #306230;
+}
+
+body:has(#gb-toggle:checked) .page-title {
+  color: #0f380f;
+  text-shadow: 1px 1px 0 rgba(15,56,15,0.3);
+}
+
+/* Search */
+body:has(#gb-toggle:checked) .search-form {
+  border-color: #0f380f;
+  box-shadow: 4px 4px 0 #0f380f;
+}
+
+body:has(#gb-toggle:checked) .search-input {
+  background: #8bac0f;
+  color: #0f380f;
+  border-right-color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .search-input::placeholder {
+  color: rgba(15,56,15,0.35);
+}
+
+body:has(#gb-toggle:checked) .search-btn {
+  background: #306230;
+  color: #9bbc0f;
+}
+
+body:has(#gb-toggle:checked) .search-btn:hover { background: #0f380f; }
+
+/* Pokémon cards */
+body:has(#gb-toggle:checked) .poke-card {
+  background: #306230;
+  border-color: #0f380f;
+  box-shadow: 4px 4px 0 #0f380f;
+}
+
+body:has(#gb-toggle:checked) .card-top { background: #306230; }
+
+body:has(#gb-toggle:checked) .card-number { color: rgba(155,188,15,0.7); }
+
+body:has(#gb-toggle:checked) .card-sprite-wrap::before {
+  background: rgba(0,0,0,0.2);
+}
+
+body:has(#gb-toggle:checked) .card-sprite {
+  filter: drop-shadow(1px 2px 0 rgba(0,0,0,0.5)) sepia(1) hue-rotate(60deg) saturate(0.6) brightness(0.7);
+}
+
+body:has(#gb-toggle:checked) .card-bottom {
+  background: #8bac0f;
+  border-top-color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .card-name { color: #0f380f; }
+
+/* Pagination */
+body:has(#gb-toggle:checked) .page-btn {
+  background: #306230;
+  color: #9bbc0f;
+  border-color: #0f380f;
+  box-shadow: 4px 4px 0 #0f380f;
+}
+
+body:has(#gb-toggle:checked) .page-btn:hover { box-shadow: 6px 6px 0 #0f380f; }
+body:has(#gb-toggle:checked) .page-btn:active { box-shadow: 2px 2px 0 #0f380f; }
+body:has(#gb-toggle:checked) .page-btn.disabled { background: #5a7a3a; color: #8bac0f; }
+
+body:has(#gb-toggle:checked) .page-info {
+  color: #0f380f;
+  text-shadow: none;
+}
+
+/* Modal */
+body:has(#gb-toggle:checked) .modal-backdrop {
+  background: rgba(15,56,15,0.88);
+}
+
+body:has(#gb-toggle:checked) .modal-panel {
+  background: #9bbc0f;
+  border-color: #0f380f;
+  box-shadow: 8px 8px 0 #0f380f;
+  color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .modal-header {
+  background: #0f380f;
+  border-bottom-color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .modal-number { color: rgba(155,188,15,0.6); }
+body:has(#gb-toggle:checked) .modal-name   { color: #9bbc0f; text-shadow: 1px 1px 0 #000; }
+
+body:has(#gb-toggle:checked) .modal-sprite-col {
+  background: #306230;
+  border-right-color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .modal-sprite {
+  filter: drop-shadow(2px 4px 0 rgba(0,0,0,0.5)) sepia(1) hue-rotate(60deg) saturate(0.6) brightness(0.7);
+}
+
+body:has(#gb-toggle:checked) .modal-close {
+  background: #0f380f;
+  border-color: #0f380f;
+  color: #9bbc0f;
+}
+
+body:has(#gb-toggle:checked) .section-title {
+  color: #306230;
+  border-bottom-color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .data-label  { color: #306230; }
+body:has(#gb-toggle:checked) .data-value  { color: #0f380f; }
+body:has(#gb-toggle:checked) .ability-item { color: #0f380f; }
+body:has(#gb-toggle:checked) .ability-item.hidden { color: #306230; }
+
+body:has(#gb-toggle:checked) .hidden-tag {
+  background: #0f380f;
+  color: #9bbc0f;
+}
+
+body:has(#gb-toggle:checked) .stat-label { color: #306230; }
+body:has(#gb-toggle:checked) .stat-value { color: #0f380f; }
+
+body:has(#gb-toggle:checked) .stat-bar-track {
+  background: rgba(15,56,15,0.15);
+  border-color: #0f380f;
+}
+
+/* Moves */
+body:has(#gb-toggle:checked) .move-card {
+  background: #8bac0f;
+  border-color: #0f380f;
+  box-shadow: 4px 4px 0 #0f380f;
+  color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .move-id    { color: #306230; }
+body:has(#gb-toggle:checked) .move-name  { color: #0f380f; }
+body:has(#gb-toggle:checked) .move-effect { color: #306230; border-top-color: rgba(15,56,15,0.2); }
+
+body:has(#gb-toggle:checked) .move-stat {
+  background: rgba(15,56,15,0.1);
+  border-color: rgba(15,56,15,0.2);
+}
+
+body:has(#gb-toggle:checked) .move-stat-label { color: #306230; }
+body:has(#gb-toggle:checked) .move-stat-value { color: #0f380f; }
+
+body:has(#gb-toggle:checked) .damage-class.physical { background: #306230; }
+body:has(#gb-toggle:checked) .damage-class.special  { background: #1a4a1a; }
+body:has(#gb-toggle:checked) .damage-class.status   { background: #5a7a3a; }
+
+/* Abilities */
+body:has(#gb-toggle:checked) .ability-card {
+  background: #8bac0f;
+  border-color: #0f380f;
+  box-shadow: 4px 4px 0 #0f380f;
+  color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .ability-card-left {
+  background: #306230;
+  border-right-color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .ability-id            { color: rgba(155,188,15,0.6); }
+body:has(#gb-toggle:checked) .ability-card-name     { color: #9bbc0f; text-shadow: 1px 1px 0 #000; }
+body:has(#gb-toggle:checked) .ability-pokemon-count { color: rgba(155,188,15,0.7); }
+body:has(#gb-toggle:checked) .ability-card-effect   { color: #0f380f; }
+
+/* Berries */
+body:has(#gb-toggle:checked) .berry-card {
+  background: #8bac0f;
+  border-color: #0f380f;
+  box-shadow: 4px 4px 0 #0f380f;
+  color: #0f380f;
+}
+
+body:has(#gb-toggle:checked) .berry-id           { color: #306230; }
+body:has(#gb-toggle:checked) .berry-name         { color: #0f380f; }
+body:has(#gb-toggle:checked) .berry-stat         { background: rgba(15,56,15,0.08); border-color: rgba(15,56,15,0.18); }
+body:has(#gb-toggle:checked) .berry-stat-label   { color: #306230; }
+body:has(#gb-toggle:checked) .berry-stat-value   { color: #0f380f; }
+body:has(#gb-toggle:checked) .berry-flavors      { border-top-color: rgba(15,56,15,0.18); }
+body:has(#gb-toggle:checked) .berry-flavor       { background: #306230; border-color: #0f380f; }
+body:has(#gb-toggle:checked) .flavor-spicy,
+body:has(#gb-toggle:checked) .flavor-dry,
+body:has(#gb-toggle:checked) .flavor-sweet,
+body:has(#gb-toggle:checked) .flavor-bitter,
+body:has(#gb-toggle:checked) .flavor-sour        { background: #306230; }
+
+/* Items (shop) */
+body:has(#gb-toggle:checked) .shop-table { border-color: #0f380f; box-shadow: 4px 4px 0 #0f380f; }
+body:has(#gb-toggle:checked) .shop-table thead { background: #0f380f; }
+body:has(#gb-toggle:checked) .shop-row { background: #8bac0f; border-bottom-color: rgba(15,56,15,0.15); }
+body:has(#gb-toggle:checked) .shop-row:nth-child(even) { background: #9bbc0f; }
+body:has(#gb-toggle:checked) .shop-row:hover { background: #a8cc10; }
+body:has(#gb-toggle:checked) .shop-item-id   { color: #306230; }
+body:has(#gb-toggle:checked) .shop-item-name { color: #0f380f; }
+body:has(#gb-toggle:checked) .shop-item-cat  { color: #306230; background: rgba(15,56,15,0.1); border-color: rgba(15,56,15,0.25); }
+body:has(#gb-toggle:checked) .shop-price     { color: #0f380f; }
+body:has(#gb-toggle:checked) .shop-price-free { color: #5a7a3a; }
+body:has(#gb-toggle:checked) .shop-effect    { color: #306230; }
+body:has(#gb-toggle:checked) .shop-effect-empty { color: #5a7a3a; }
+body:has(#gb-toggle:checked) .shop-sprite-missing { color: #306230; }
+
+/* Natures accordion */
+body:has(#gb-toggle:checked) .acc-section  { border-color: #0f380f; box-shadow: 4px 4px 0 #0f380f; }
+body:has(#gb-toggle:checked) .acc-header   { background: #0f380f; }
+body:has(#gb-toggle:checked) .acc-stat-name { color: #9bbc0f; }
+body:has(#gb-toggle:checked) .acc-count-up   { color: #9bbc0f; }
+body:has(#gb-toggle:checked) .acc-count-down { color: #8bac0f; }
+body:has(#gb-toggle:checked) .acc-arrow      { color: #9bbc0f; }
+body:has(#gb-toggle:checked) .acc-body       { background: #8bac0f; border-top-color: #0f380f; }
+body:has(#gb-toggle:checked) .acc-col + .acc-col { border-left-color: #0f380f; }
+body:has(#gb-toggle:checked) .acc-col-header   { color: #306230; border-bottom-color: rgba(15,56,15,0.2); }
+body:has(#gb-toggle:checked) .acc-up   .acc-col-header { color: #0f380f; }
+body:has(#gb-toggle:checked) .acc-down .acc-col-header { color: #306230; }
+body:has(#gb-toggle:checked) .acc-nature-row   { border-bottom-color: rgba(15,56,15,0.1); }
+body:has(#gb-toggle:checked) .acc-nature-name  { color: #0f380f; }
+body:has(#gb-toggle:checked) .acc-up   .acc-nature-sub { color: #0f380f; }
+body:has(#gb-toggle:checked) .acc-down .acc-nature-sub { color: #306230; }
+body:has(#gb-toggle:checked) .acc-neutral-tag  { color: #5a7a3a; }
+
+/* Type matrix */
+body:has(#gb-toggle:checked) .type-matrix th,
+body:has(#gb-toggle:checked) .type-matrix td  { border-color: rgba(15,56,15,0.15); }
+body:has(#gb-toggle:checked) .matrix-corner,
+body:has(#gb-toggle:checked) .matrix-col-header,
+body:has(#gb-toggle:checked) .matrix-row-header { background: #0f380f; }
+body:has(#gb-toggle:checked) .matrix-corner     { color: #9bbc0f; }
+body:has(#gb-toggle:checked) .matrix-legend-label { color: #0f380f; }
+
+body:has(#gb-toggle:checked) .eff-2x-cell   { background: #0f380f; color: #9bbc0f; }
+body:has(#gb-toggle:checked) .eff-half-cell { background: #5a7a3a; color: #8bac0f; }
+body:has(#gb-toggle:checked) .eff-0-cell    { background: #306230; color: #0f380f; }
+body:has(#gb-toggle:checked) .eff-1-cell    { background: #8bac0f; color: transparent; }
+body:has(#gb-toggle:checked) .eff-2-cell    { background: #0f380f; color: #9bbc0f; }
+body:has(#gb-toggle:checked) .eff-h-cell    { background: #5a7a3a; color: #8bac0f; }
