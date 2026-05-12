@@ -48,6 +48,8 @@
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
     <!-- Checkbox hack para tema Game Boy DMG-01 -->
     <input type="checkbox" id="gb-toggle" class="gb-toggle-input" aria-hidden="true">
+    <!-- Checkbox hack para tema monocromático gris -->
+    <input type="checkbox" id="gray-toggle" class="gb-toggle-input" aria-hidden="true">
 
     <div class="header-inner">
       <label for="nav-toggle" class="hamburger" aria-label="Abrir menú">
@@ -56,6 +58,7 @@
         <span></span>
       </label>
       <label for="gb-toggle" class="gb-toggle-btn" title="Modo Game Boy DMG-01">DMG</label>
+      <label for="gray-toggle" class="gray-toggle-btn" title="Modo monocromático gris">MONO</label>
       <h1 class="site-title"><a href="/" class="site-title-link">POKEDEX</a></h1>
       <div class="header-badge">RENZO RAMOS</div>
     </div>
@@ -77,10 +80,20 @@
 
   <script>
     (function() {
-      var cb = document.getElementById('gb-toggle');
-      if (localStorage.getItem('gb-theme') === '1') cb.checked = true;
-      cb.addEventListener('change', function() {
-        localStorage.setItem('gb-theme', cb.checked ? '1' : '0');
+      var gb   = document.getElementById('gb-toggle');
+      var gray = document.getElementById('gray-toggle');
+
+      var active = localStorage.getItem('theme');
+      if (active === 'gb')   gb.checked   = true;
+      if (active === 'gray') gray.checked = true;
+
+      gb.addEventListener('change', function() {
+        if (gb.checked) { gray.checked = false; localStorage.setItem('theme', 'gb'); }
+        else            { localStorage.removeItem('theme'); }
+      });
+      gray.addEventListener('change', function() {
+        if (gray.checked) { gb.checked = false; localStorage.setItem('theme', 'gray'); }
+        else              { localStorage.removeItem('theme'); }
       });
     })();
   </script>

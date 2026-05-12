@@ -1744,3 +1744,219 @@ body:has(#gb-toggle:checked) .page-header { border-bottom-color: #0f380f; }
 body:has(#gb-toggle:checked) .logo-dot.red,
 body:has(#gb-toggle:checked) .logo-dot.yellow,
 body:has(#gb-toggle:checked) .logo-dot.green  { background: #306230; box-shadow: none; border-color: #0f380f; }
+
+/* ═══════════════════════════════════════════════════
+   BOTÓN TEMA MONOCROMÁTICO GRIS
+   ═══════════════════════════════════════════════════ */
+
+.gray-toggle-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  background: #1a1a1a;
+  color: #aaaaaa;
+  border: 2px solid #aaaaaa;
+  padding: 5px 7px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  user-select: none;
+  transition: background 80ms, color 80ms;
+  box-shadow: 2px 2px 0 #000;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.gray-toggle-btn:hover { background: #aaaaaa; color: #111; }
+
+body:has(#gray-toggle:checked) .gray-toggle-btn {
+  background: #aaaaaa;
+  color: #111;
+  box-shadow: 0 0 0 #000;
+  transform: translate(2px, 2px);
+}
+
+/* ═══════════════════════════════════════════════════
+   TEMA MONOCROMÁTICO GRIS
+   Paleta: #f0f0f0 · #cccccc · #888888 · #333333 · #111111
+   ═══════════════════════════════════════════════════ */
+
+body:has(#gray-toggle:checked) {
+  background-color: #d0d0d0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size: 8px 8px;
+  color: #111;
+}
+
+/* Header */
+body:has(#gray-toggle:checked) .site-header    { background: #222; border-bottom-color: #000; box-shadow: 0 4px 0 #000; }
+body:has(#gray-toggle:checked) .hamburger      { border-color: rgba(255,255,255,0.3); }
+body:has(#gray-toggle:checked) .hamburger span { background: #ccc; }
+body:has(#gray-toggle:checked) .site-title     { color: #eee; text-shadow: 2px 2px 0 #000; }
+body:has(#gray-toggle:checked) .site-title-link { color: inherit; }
+body:has(#gray-toggle:checked) .header-badge   { background: #555; color: #eee; border-color: #000; }
+
+/* Nav */
+body:has(#gray-toggle:checked) .nav-menu            { background: #111; border-bottom-color: #555; }
+body:has(#gray-toggle:checked) .nav-link            { color: #999; }
+body:has(#gray-toggle:checked) .nav-link:hover      { background: #222; color: #eee; }
+body:has(#gray-toggle:checked) .nav-link.active     { color: #eee; border-left-color: #555; }
+
+/* Page header */
+body:has(#gray-toggle:checked) .page-header  { border-bottom-color: #555; }
+body:has(#gray-toggle:checked) .page-title   { color: #111; text-shadow: none; }
+
+/* Search */
+body:has(#gray-toggle:checked) .search-form          { border-color: #111; box-shadow: 4px 4px 0 #111; }
+body:has(#gray-toggle:checked) .search-input         { background: #eee; color: #111; border-right-color: #111; }
+body:has(#gray-toggle:checked) .search-input::placeholder { color: rgba(0,0,0,0.3); }
+body:has(#gray-toggle:checked) .search-btn           { background: #444; color: #eee; }
+body:has(#gray-toggle:checked) .search-btn:hover     { background: #222; }
+
+/* Pokémon cards */
+body:has(#gray-toggle:checked) .poke-card            { background: #555; border-color: #111; box-shadow: 4px 4px 0 #111; }
+body:has(#gray-toggle:checked) .card-top             { background: #555; }
+body:has(#gray-toggle:checked) .card-number          { color: rgba(255,255,255,0.5); }
+body:has(#gray-toggle:checked) .card-sprite          { filter: grayscale(1) brightness(0.85); }
+body:has(#gray-toggle:checked) .card-bottom          { background: #e0e0e0; border-top-color: #111; }
+body:has(#gray-toggle:checked) .card-name            { color: #111; }
+
+/* Type badges */
+body:has(#gray-toggle:checked) .type-normal,
+body:has(#gray-toggle:checked) .type-fire,
+body:has(#gray-toggle:checked) .type-water,
+body:has(#gray-toggle:checked) .type-electric,
+body:has(#gray-toggle:checked) .type-grass,
+body:has(#gray-toggle:checked) .type-ice,
+body:has(#gray-toggle:checked) .type-fighting,
+body:has(#gray-toggle:checked) .type-poison,
+body:has(#gray-toggle:checked) .type-ground,
+body:has(#gray-toggle:checked) .type-flying,
+body:has(#gray-toggle:checked) .type-psychic,
+body:has(#gray-toggle:checked) .type-bug,
+body:has(#gray-toggle:checked) .type-rock,
+body:has(#gray-toggle:checked) .type-ghost,
+body:has(#gray-toggle:checked) .type-dragon,
+body:has(#gray-toggle:checked) .type-dark,
+body:has(#gray-toggle:checked) .type-steel,
+body:has(#gray-toggle:checked) .type-fairy           { background: #555; color: #eee; border-color: #111; text-shadow: none; }
+
+/* Pagination */
+body:has(#gray-toggle:checked) .page-btn             { background: #555; color: #eee; border-color: #111; box-shadow: 4px 4px 0 #111; }
+body:has(#gray-toggle:checked) .page-btn:hover       { box-shadow: 6px 6px 0 #111; }
+body:has(#gray-toggle:checked) .page-btn:active      { box-shadow: 2px 2px 0 #111; }
+body:has(#gray-toggle:checked) .page-btn.disabled    { background: #999; color: #ccc; }
+body:has(#gray-toggle:checked) .page-info            { color: #111; text-shadow: none; }
+
+/* Modal */
+body:has(#gray-toggle:checked) .modal-backdrop       { background: rgba(0,0,0,0.82); }
+body:has(#gray-toggle:checked) .modal-panel          { background: #e8e8e8; border-color: #111; box-shadow: 8px 8px 0 #111; color: #111; }
+body:has(#gray-toggle:checked) .modal-header         { background: #222; border-bottom-color: #000; }
+body:has(#gray-toggle:checked) .modal-number         { color: rgba(255,255,255,0.5); }
+body:has(#gray-toggle:checked) .modal-name           { color: #eee; text-shadow: 1px 1px 0 #000; }
+body:has(#gray-toggle:checked) .modal-sprite-col     { background: #555; border-right-color: #111; }
+body:has(#gray-toggle:checked) .modal-sprite         { filter: grayscale(1) brightness(0.85); }
+body:has(#gray-toggle:checked) .modal-close          { background: #111; border-color: #111; color: #eee; }
+body:has(#gray-toggle:checked) .section-title        { color: #444; border-bottom-color: #111; }
+body:has(#gray-toggle:checked) .data-label           { color: #555; }
+body:has(#gray-toggle:checked) .data-value           { color: #111; }
+body:has(#gray-toggle:checked) .ability-item         { color: #111; }
+body:has(#gray-toggle:checked) .ability-item.hidden  { color: #777; }
+body:has(#gray-toggle:checked) .hidden-tag           { background: #111; color: #eee; }
+body:has(#gray-toggle:checked) .stat-label           { color: #555; }
+body:has(#gray-toggle:checked) .stat-value           { color: #111; }
+body:has(#gray-toggle:checked) .stat-bar-track       { background: rgba(0,0,0,0.12); border-color: #111; }
+body:has(#gray-toggle:checked) .stat-bar-fill        { background: #555 !important; opacity: 1; }
+
+/* Moves */
+body:has(#gray-toggle:checked) .move-card            { background: #ddd; border-color: #111; box-shadow: 4px 4px 0 #111; color: #111; }
+body:has(#gray-toggle:checked) .move-id              { color: #777; }
+body:has(#gray-toggle:checked) .move-name            { color: #111; }
+body:has(#gray-toggle:checked) .move-effect          { color: #444; border-top-color: rgba(0,0,0,0.15); }
+body:has(#gray-toggle:checked) .move-stat            { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); }
+body:has(#gray-toggle:checked) .move-stat-label      { color: #666; }
+body:has(#gray-toggle:checked) .move-stat-value      { color: #111; }
+body:has(#gray-toggle:checked) .damage-class.physical { background: #444; color: #eee; }
+body:has(#gray-toggle:checked) .damage-class.special  { background: #666; color: #eee; }
+body:has(#gray-toggle:checked) .damage-class.status   { background: #888; color: #eee; }
+
+/* Abilities */
+body:has(#gray-toggle:checked) .ability-card         { background: #ddd; border-color: #111; box-shadow: 4px 4px 0 #111; color: #111; }
+body:has(#gray-toggle:checked) .ability-card-left    { background: #444; border-right-color: #111; }
+body:has(#gray-toggle:checked) .ability-id            { color: rgba(255,255,255,0.5); }
+body:has(#gray-toggle:checked) .ability-card-name    { color: #eee; text-shadow: 1px 1px 0 #000; }
+body:has(#gray-toggle:checked) .ability-pokemon-count { color: rgba(255,255,255,0.6); }
+body:has(#gray-toggle:checked) .ability-card-effect  { color: #222; }
+
+/* Berries */
+body:has(#gray-toggle:checked) .berry-card           { background: #ddd; border-color: #111; box-shadow: 4px 4px 0 #111; color: #111; }
+body:has(#gray-toggle:checked) .berry-id             { color: #777; }
+body:has(#gray-toggle:checked) .berry-name           { color: #111; }
+body:has(#gray-toggle:checked) .berry-stat           { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); }
+body:has(#gray-toggle:checked) .berry-stat-label     { color: #666; }
+body:has(#gray-toggle:checked) .berry-stat-value     { color: #111; }
+body:has(#gray-toggle:checked) .berry-flavors        { border-top-color: rgba(0,0,0,0.15); }
+body:has(#gray-toggle:checked) .berry-flavor,
+body:has(#gray-toggle:checked) .flavor-spicy,
+body:has(#gray-toggle:checked) .flavor-dry,
+body:has(#gray-toggle:checked) .flavor-sweet,
+body:has(#gray-toggle:checked) .flavor-bitter,
+body:has(#gray-toggle:checked) .flavor-sour          { background: #555; color: #eee; border-color: #111; }
+
+/* Items */
+body:has(#gray-toggle:checked) .shop-table           { border-color: #111; box-shadow: 4px 4px 0 #111; }
+body:has(#gray-toggle:checked) .shop-table thead     { background: #222; }
+body:has(#gray-toggle:checked) .shop-table th        { color: #ccc; }
+body:has(#gray-toggle:checked) .shop-row             { background: #ddd; border-bottom-color: rgba(0,0,0,0.12); }
+body:has(#gray-toggle:checked) .shop-row:nth-child(even) { background: #e8e8e8; }
+body:has(#gray-toggle:checked) .shop-row:hover       { background: #c8c8c8; }
+body:has(#gray-toggle:checked) .shop-sprite          { filter: grayscale(1) brightness(0.85); }
+body:has(#gray-toggle:checked) .shop-sprite-missing  { color: #888; }
+body:has(#gray-toggle:checked) .shop-item-id         { color: #888; }
+body:has(#gray-toggle:checked) .shop-item-name       { color: #111; }
+body:has(#gray-toggle:checked) .shop-item-cat        { color: #444; background: rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.2); }
+body:has(#gray-toggle:checked) .shop-price           { color: #222; }
+body:has(#gray-toggle:checked) .shop-price-free      { color: #888; }
+body:has(#gray-toggle:checked) .shop-effect          { color: #444; }
+body:has(#gray-toggle:checked) .shop-effect-empty    { color: #aaa; }
+
+/* Natures accordion */
+body:has(#gray-toggle:checked) .acc-section          { border-color: #111; box-shadow: 4px 4px 0 #111; }
+body:has(#gray-toggle:checked) .acc-header           { background: #222; }
+body:has(#gray-toggle:checked) .acc-header[style]    { border-left-color: #555 !important; }
+body:has(#gray-toggle:checked) .acc-stat-name        { color: #ccc; }
+body:has(#gray-toggle:checked) .acc-count-up         { color: #ccc; }
+body:has(#gray-toggle:checked) .acc-count-down       { color: #999; }
+body:has(#gray-toggle:checked) .acc-arrow            { color: #ccc; }
+body:has(#gray-toggle:checked) .acc-body             { background: #ddd; border-top-color: #111; }
+body:has(#gray-toggle:checked) .acc-col + .acc-col   { border-left-color: #111; }
+body:has(#gray-toggle:checked) .acc-col-header       { color: #666; border-bottom-color: rgba(0,0,0,0.15); }
+body:has(#gray-toggle:checked) .acc-up   .acc-col-header { color: #333; }
+body:has(#gray-toggle:checked) .acc-down .acc-col-header { color: #555; }
+body:has(#gray-toggle:checked) .acc-nature-row       { border-bottom-color: rgba(0,0,0,0.08); }
+body:has(#gray-toggle:checked) .acc-nature-name      { color: #111; }
+body:has(#gray-toggle:checked) .acc-up   .acc-nature-sub { color: #222; }
+body:has(#gray-toggle:checked) .acc-down .acc-nature-sub { color: #555; }
+body:has(#gray-toggle:checked) .acc-neutral-tag      { color: #777; }
+
+/* Type matrix */
+body:has(#gray-toggle:checked) .type-matrix th,
+body:has(#gray-toggle:checked) .type-matrix td       { border-color: rgba(0,0,0,0.1); }
+body:has(#gray-toggle:checked) .matrix-corner,
+body:has(#gray-toggle:checked) .matrix-col-header,
+body:has(#gray-toggle:checked) .matrix-row-header    { background: #222; }
+body:has(#gray-toggle:checked) .matrix-corner        { color: #ccc; }
+body:has(#gray-toggle:checked) .matrix-legend-label  { color: #111; }
+body:has(#gray-toggle:checked) .eff-2x-cell          { background: #222; color: #eee; }
+body:has(#gray-toggle:checked) .eff-half-cell        { background: #777; color: #eee; }
+body:has(#gray-toggle:checked) .eff-0-cell           { background: #aaa; color: #555; }
+body:has(#gray-toggle:checked) .eff-1-cell           { background: #d0d0d0; color: transparent; }
+body:has(#gray-toggle:checked) .eff-2-cell           { background: #222; color: #eee; }
+body:has(#gray-toggle:checked) .eff-h-cell           { background: #777; color: #eee; }
+
+/* Logo dots */
+body:has(#gray-toggle:checked) .logo-dot.red,
+body:has(#gray-toggle:checked) .logo-dot.yellow,
+body:has(#gray-toggle:checked) .logo-dot.green       { background: #555; box-shadow: none; border-color: #000; }
