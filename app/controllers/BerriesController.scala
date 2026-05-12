@@ -23,7 +23,7 @@ class BerriesController @Inject() (
   def index(page: Int): Action[AnyContent] = Action.async { implicit request =>
     val offset = (page - 1) * pageSize
     ws.url(s"$baseUrl/api/v2/berry?limit=$pageSize&offset=$offset").get().flatMap { listResp =>
-      val paginated  = listResp.body.parseJson.convertTo[PaginatedResponse]
+      val paginated  = listResp.body[String].parseJson.convertTo[PaginatedResponse]
       val totalPages = math.ceil(paginated.count.toDouble / pageSize).toInt
       val fetches    = paginated.results.map(r => fetchBerry(r.name))
       Future.sequence(fetches).map { opts =>
@@ -35,6 +35,6 @@ class BerriesController @Inject() (
 
   private def fetchBerry(name: String): Future[Option[Berry]] =
     ws.url(s"$baseUrl/api/v2/berry/$name").get().map { r =>
-      if (r.status == 200) Some(r.body.parseJson.convertTo[Berry]) else None
+      if (r.status == 200) Some(r.body[String].parseJson.convertTo[Berry]) else None
     }
 }

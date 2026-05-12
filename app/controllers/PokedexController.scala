@@ -22,7 +22,7 @@ class PokedexController @Inject() (
   def index(page: Int): Action[AnyContent] = Action.async { implicit request =>
     val offset = (page - 1) * pageSize
     ws.url(s"$baseUrl/api/v2/pokemon?limit=$pageSize&offset=$offset").get().flatMap { listResp =>
-      val paginated  = listResp.body.parseJson.convertTo[PaginatedResponse]
+      val paginated  = listResp.body[String].parseJson.convertTo[PaginatedResponse]
       val totalPages = math.ceil(paginated.count.toDouble / pageSize).toInt
       val fetches    = paginated.results.map(r => fetchByName(r.name))
       Future.sequence(fetches).map { opts =>
@@ -34,6 +34,6 @@ class PokedexController @Inject() (
 
   private def fetchByName(name: String): Future[Option[Pokemon]] =
     ws.url(s"$baseUrl/api/v2/pokemon/$name").get().map { r =>
-      if (r.status == 200) Some(r.body.parseJson.convertTo[Pokemon]) else None
+      if (r.status == 200) Some(r.body[String].parseJson.convertTo[Pokemon]) else None
     }
 }

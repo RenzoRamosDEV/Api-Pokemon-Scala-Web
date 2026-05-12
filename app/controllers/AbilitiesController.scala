@@ -23,7 +23,7 @@ class AbilitiesController @Inject() (
   def index(page: Int): Action[AnyContent] = Action.async { implicit request =>
     val offset = (page - 1) * pageSize
     ws.url(s"$baseUrl/api/v2/ability?limit=$pageSize&offset=$offset").get().flatMap { listResp =>
-      val paginated  = listResp.body.parseJson.convertTo[PaginatedResponse]
+      val paginated  = listResp.body[String].parseJson.convertTo[PaginatedResponse]
       val totalPages = math.ceil(paginated.count.toDouble / pageSize).toInt
       val fetches    = paginated.results.map(r => fetchAbility(r.name))
       Future.sequence(fetches).map { opts =>
@@ -35,6 +35,6 @@ class AbilitiesController @Inject() (
 
   private def fetchAbility(name: String): Future[Option[Ability]] =
     ws.url(s"$baseUrl/api/v2/ability/$name").get().map { r =>
-      if (r.status == 200) Some(r.body.parseJson.convertTo[Ability]) else None
+      if (r.status == 200) Some(r.body[String].parseJson.convertTo[Ability]) else None
     }
 }

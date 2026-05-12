@@ -21,7 +21,7 @@ class NaturesController @Inject() (
 
   def index(): Action[AnyContent] = Action.async { implicit request =>
     ws.url(s"$baseUrl/api/v2/nature?limit=100").get().flatMap { listResp =>
-      val paginated = listResp.body.parseJson.convertTo[PaginatedResponse]
+      val paginated = listResp.body[String].parseJson.convertTo[PaginatedResponse]
       val fetches   = paginated.results.map(r => fetchNature(r.name))
       Future.sequence(fetches).map { opts =>
         val natures = opts.flatten.sortBy(_.id)
@@ -32,6 +32,6 @@ class NaturesController @Inject() (
 
   private def fetchNature(name: String): Future[Option[Nature]] =
     ws.url(s"$baseUrl/api/v2/nature/$name").get().map { r =>
-      if (r.status == 200) Some(r.body.parseJson.convertTo[Nature]) else None
+      if (r.status == 200) Some(r.body[String].parseJson.convertTo[Nature]) else None
     }
 }

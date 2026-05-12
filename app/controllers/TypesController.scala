@@ -21,7 +21,7 @@ class TypesController @Inject() (
 
   def index(): Action[AnyContent] = Action.async { implicit request =>
     ws.url(s"$baseUrl/api/v2/type?limit=100").get().flatMap { listResp =>
-      val paginated = listResp.body.parseJson.convertTo[PaginatedResponse]
+      val paginated = listResp.body[String].parseJson.convertTo[PaginatedResponse]
       val fetches   = paginated.results.map(r => fetchType(r.name))
       Future.sequence(fetches).map { opts =>
         val types = opts.flatten
@@ -34,6 +34,6 @@ class TypesController @Inject() (
 
   private def fetchType(name: String): Future[Option[GameType]] =
     ws.url(s"$baseUrl/api/v2/type/$name").get().map { r =>
-      if (r.status == 200) Some(r.body.parseJson.convertTo[GameType]) else None
+      if (r.status == 200) Some(r.body[String].parseJson.convertTo[GameType]) else None
     }
 }
