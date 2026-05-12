@@ -75,5 +75,14 @@
     @content
   </main>
 
+  <script>
+    (function() {
+      var cb = document.getElementById('gb-toggle');
+      if (localStorage.getItem('gb-theme') === '1') cb.checked = true;
+      cb.addEventListener('change', function() {
+        localStorage.setItem('gb-theme', cb.checked ? '1' : '0');
+      });
+    })();
+  </script>
 </body>
 </html>
