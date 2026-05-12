@@ -1679,6 +1679,7 @@ body:has(#gb-toggle:checked) .shop-price-free { color: #5a7a3a; }
 body:has(#gb-toggle:checked) .shop-effect    { color: #306230; }
 body:has(#gb-toggle:checked) .shop-effect-empty { color: #5a7a3a; }
 body:has(#gb-toggle:checked) .shop-sprite-missing { color: #306230; }
+body:has(#gb-toggle:checked) .shop-sprite { filter: grayscale(1) sepia(1) hue-rotate(60deg) saturate(0.5) brightness(0.65); }
 
 /* Natures accordion */
 body:has(#gb-toggle:checked) .acc-section  { border-color: #0f380f; box-shadow: 4px 4px 0 #0f380f; }
