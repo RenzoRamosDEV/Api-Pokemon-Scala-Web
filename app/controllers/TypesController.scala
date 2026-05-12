@@ -19,15 +19,18 @@ class TypesController @Inject() (
 
   private val baseUrl = config.get[String]("pokeapi.base-url")
 
-  def index(): Action[AnyContent] = Action.async { implicit request =>
+  def index(q: Option[String]): Action[AnyContent] = Action.async { implicit request =>
     ws.url(s"$baseUrl/api/v2/type?limit=100").get().flatMap { listResp =>
-      val paginated = listResp.body[String].parseJson.convertTo[PaginatedResponse]
-      val fetches   = paginated.results.map(r => fetchType(r.name))
-      Future.sequence(fetches).map { opts =>
+      val all      = listResp.body[String].parseJson.convertTo[PaginatedResponse]
+      val filtered = q.map(_.trim).filter(_.nonEmpty) match {
+        case Some(query) => all.results.filter(_.name.contains(query.toLowerCase))
+        case None        => all.results
+      }
+      Future.sequence(filtered.map(r => fetchType(r.name))).map { opts =>
         val types = opts.flatten
           .filterNot(t => t.name == "unknown" || t.name == "shadow")
           .sortBy(_.id)
-        Ok(views.html.types(types))
+        Ok(views.html.types(types, q))
       }
     }
   }

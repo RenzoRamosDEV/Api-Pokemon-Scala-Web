@@ -53,6 +53,53 @@
         <span></span>
         <span></span>
       </label>
+      <div class="theme-picker-wrap">
+        <button id="theme-btn" class="theme-cycle-btn" title="Cambiar tema">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/>
+            <line x1="12" y1="2" x2="12" y2="22"/>
+          </svg>
+        </button>
+        <div id="theme-dropdown" class="theme-dropdown" hidden>
+          <button class="theme-option" data-value="normal">NORMAL</button>
+          <button class="theme-option" data-value="gb">DMG</button>
+          <button class="theme-option" data-value="gray">MONO</button>
+        </div>
+      </div>
+
+      <div class="info-wrap">
+        <button id="info-btn" class="theme-cycle-btn" title="Información">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="8" stroke-width="3" stroke-linecap="round"/>
+            <line x1="12" y1="12" x2="12" y2="17"/>
+          </svg>
+        </button>
+        <div id="info-dropdown" class="theme-dropdown info-panel" hidden>
+          <div class="info-row info-title">POKEDEX RETRO</div>
+          <div class="info-row">
+            <span class="info-label">AUTOR</span>
+            <span class="info-value">RENZO RAMOS</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">VERSIÓN</span>
+            <span class="info-value">1.0</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">STACK</span>
+            <span class="info-value">SCALA · PLAY</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">DATOS</span>
+            <span class="info-value">POKEAPI.CO</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">SECCIONES</span>
+            <span class="info-value">7</span>
+          </div>
+        </div>
+      </div>
       <h1 class="site-title"><a href="/" class="site-title-link">POKEDEX</a></h1>
       <div class="header-badge">RENZO RAMOS</div>
     </div>
@@ -72,8 +119,45 @@
     @content
   </main>
 
-  <footer class="site-footer">
-    <p>© RENZO RAMOS — POWERED BY POKEAPI</p>
-  </footer>
+  <script>
+    (function() {
+      var labels   = { normal: 'NORMAL', gb: 'DMG', gray: 'MONO' };
+      var btn      = document.getElementById('theme-btn');
+      var dropdown = document.getElementById('theme-dropdown');
+      var current  = localStorage.getItem('theme') || 'normal';
+
+      function applyTheme(t) {
+        document.body.dataset.theme = t;
+        current = t;
+        localStorage.setItem('theme', t);
+        dropdown.hidden = true;
+        document.querySelectorAll('.theme-option').forEach(function(o) {
+          o.classList.toggle('active', o.dataset.value === t);
+        });
+      }
+
+      applyTheme(current);
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.hidden = !dropdown.hidden;
+      });
+
+      document.querySelectorAll('.theme-option').forEach(function(o) {
+        o.addEventListener('click', function() { applyTheme(o.dataset.value); });
+      });
+
+      document.addEventListener('click', function() { dropdown.hidden = true; });
+
+      var infoBtn = document.getElementById('info-btn');
+      var infoPanel = document.getElementById('info-dropdown');
+      infoBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        infoPanel.hidden = !infoPanel.hidden;
+        dropdown.hidden = true;
+      });
+      document.addEventListener('click', function() { infoPanel.hidden = true; });
+    })();
+  </script>
 </body>
 </html>
