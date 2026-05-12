@@ -1,0 +1,64 @@
+@(berries: List[models.Berry], currentPage: Int, totalPages: Int)
+@main("BAYAS — Pokédex Retro", "bayas") {
+
+  <div class="page-header">
+    <h2 class="page-title">BAYAS</h2>
+  </div>
+
+  <div class="berries-grid">
+    @for(berry <- berries) {
+      <div class="berry-card">
+        <div class="berry-card-top">
+          <span class="berry-id">#@berry.id</span>
+          <span class="type-badge type-@berry.naturalGiftType">@berry.naturalGiftType.toUpperCase</span>
+        </div>
+        <h3 class="berry-name">@berry.name.toUpperCase BERRY</h3>
+        <div class="berry-stats">
+          <div class="berry-stat">
+            <span class="berry-stat-label">CRECIM.</span>
+            <span class="berry-stat-value">@berry.growthTime H</span>
+          </div>
+          <div class="berry-stat">
+            <span class="berry-stat-label">COSECHA</span>
+            <span class="berry-stat-value">x@berry.maxHarvest</span>
+          </div>
+          <div class="berry-stat">
+            <span class="berry-stat-label">POD.NAT.</span>
+            <span class="berry-stat-value">@berry.naturalGiftPower</span>
+          </div>
+          <div class="berry-stat">
+            <span class="berry-stat-label">SUAVIDAD</span>
+            <span class="berry-stat-value">@berry.smoothness</span>
+          </div>
+          <div class="berry-stat">
+            <span class="berry-stat-label">FIRMEZA</span>
+            <span class="berry-stat-value">@berry.firmness.toUpperCase</span>
+          </div>
+        </div>
+        @if(berry.flavors.exists(_.potency > 0)) {
+          <div class="berry-flavors">
+            @for(f <- berry.flavors.filter(_.potency > 0)) {
+              <span class="berry-flavor flavor-@f.flavor">@f.flavor.toUpperCase @f.potency</span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if(totalPages > 1) {
+    <nav class="pagination">
+      @if(currentPage > 1) {
+        <a href="/bayas?page=@{currentPage - 1}" class="page-btn">◀ PREV</a>
+      } else {
+        <span class="page-btn disabled">◀ PREV</span>
+      }
+      <span class="page-info">@currentPage / @totalPages</span>
+      @if(currentPage < totalPages) {
+        <a href="/bayas?page=@{currentPage + 1}" class="page-btn">NEXT ▶</a>
+      } else {
+        <span class="page-btn disabled">NEXT ▶</span>
+      }
+    </nav>
+  }
+}
