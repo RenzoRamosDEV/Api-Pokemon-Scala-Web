@@ -1,0 +1,38 @@
+@(abilities: List[models.Ability], currentPage: Int, totalPages: Int)
+@main("HABILIDADES — Pokédex Retro", "habilidades") {
+
+  <div class="page-header">
+    <h2 class="page-title">HABILIDADES</h2>
+  </div>
+
+  <div class="abilities-list">
+    @for(ability <- abilities) {
+      <div class="ability-card">
+        <div class="ability-card-left">
+          <span class="ability-id">#@ability.id</span>
+          <h3 class="ability-card-name">@ability.name.toUpperCase</h3>
+          <span class="ability-pokemon-count">@ability.pokemonCount POKEMON</span>
+        </div>
+        <div class="ability-card-right">
+          <p class="ability-card-effect">@ability.shortEffect</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if(totalPages > 1) {
+    <nav class="pagination">
+      @if(currentPage > 1) {
+        <a href="/habilidades?page=@{currentPage - 1}" class="page-btn">◀ PREV</a>
+      } else {
+        <span class="page-btn disabled">◀ PREV</span>
+      }
+      <span class="page-info">@currentPage / @totalPages</span>
+      @if(currentPage < totalPages) {
+        <a href="/habilidades?page=@{currentPage + 1}" class="page-btn">NEXT ▶</a>
+      } else {
+        <span class="page-btn disabled">NEXT ▶</span>
+      }
+    </nav>
+  }
+}
