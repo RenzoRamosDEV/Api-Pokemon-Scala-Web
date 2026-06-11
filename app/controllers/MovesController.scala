@@ -19,13 +19,14 @@ class MovesController @Inject() (
 
   private val baseUrl  = config.get[String]("pokeapi.base-url")
   private val pageSize = 16
+  private val apiLimit = 60
 
   def index(page: Int, q: Option[String]): Action[AnyContent] = Action.async { implicit request =>
     q.map(_.trim).filter(_.nonEmpty) match {
       case Some(query) =>
         ws.url(s"$baseUrl/api/v2/move?limit=100000").get().flatMap { listResp =>
           val all      = listResp.body[String].parseJson.convertTo[PaginatedResponse]
-          val filtered = all.results.filter(_.name.contains(query.toLowerCase))
+          val filtered = all.results.filter(_.name.contains(query.toLowerCase.replace(" ", "-")))
           val slice    = filtered.slice((page - 1) * pageSize, page * pageSize)
           val total    = math.ceil(filtered.size.toDouble / pageSize).toInt
           Future.sequence(slice.map(r => fetchMove(r.name))).map { opts =>
@@ -41,6 +42,21 @@ class MovesController @Inject() (
             Ok(views.html.moves(opts.flatten.sortBy(_.id), page, totalPages, None))
           }
         }
+    }
+  }
+
+  // Acción JSON para el agente MCP. Mismo patrón que PokedexController.apiIndex:
+  // lista completa -> filtra (espacio->guion) -> cap apiLimit -> detalle -> .toJson.
+  def apiIndex(q: Option[String]): Action[AnyContent] = Action.async { implicit request =>
+    ws.url(s"$baseUrl/api/v2/move?limit=100000").get().flatMap { listResp =>
+      val all      = listResp.body[String].parseJson.convertTo[PaginatedResponse]
+      val filtered = (q.map(_.trim).filter(_.nonEmpty) match {
+        case Some(query) => all.results.filter(_.name.contains(query.toLowerCase.replace(" ", "-")))
+        case None        => all.results
+      }).take(apiLimit)
+      Future.sequence(filtered.map(r => fetchMove(r.name))).map { opts =>
+        Ok(opts.flatten.sortBy(_.id).toJson.compactPrint).as("application/json")
+      }
     }
   }
 
