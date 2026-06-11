@@ -124,6 +124,26 @@ public/
 
 ---
 
+## API REST JSON + Chatbot ReAct (MCP)
+
+Además de las vistas HTML, la app expone una **API REST JSON** (`/api/*`) pensada
+para consumo por programas, y un **servidor MCP** que la envuelve para que un
+chatbot de IA (patrón ReAct) pueda responder preguntas en lenguaje natural sobre
+Pokémon consultando datos reales.
+
+```
+Chatbot ReAct (OpenAI)  ──MCP/stdio──►  mcp_server/server.py  ──HTTP──►  /api/*  ──►  PokéAPI
+```
+
+| Pieza | Dónde | Documentación |
+|---|---|---|
+| API REST JSON (`/api/*`) | `app/controllers/*.apiIndex` + `conf/routes` | [docs/API.md](docs/API.md) |
+| Servidor MCP | [`mcp_server/`](mcp_server/) | [mcp_server/README.md](mcp_server/README.md) |
+| Chatbot ReAct (cliente MCP) | [`chatbot/`](chatbot/) (dentro de este repo) | [chatbot/README.md](chatbot/README.md) |
+| Diseño y guía completa | — | [docs/IMPLEMENTACION-REACT-MCP.md](docs/IMPLEMENTACION-REACT-MCP.md) |
+
+---
+
 ## Capturas de pantalla
 
 ### Pokédex principal
