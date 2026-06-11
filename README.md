@@ -16,23 +16,23 @@ Todo vive en un único repositorio, en cuatro capas que se apoyan unas en otras:
           │                        │ OpenAI (tool-calling)
           │                        ▼
           │              ┌────────────────────┐
-          │              │  Cliente MCP        │
+          │              │  Cliente MCP       │
           │              └─────────┬──────────┘
           │                        │ MCP (stdio)
           │                        ▼
           │              ┌────────────────────┐
-          │              │  Servidor MCP       │  mcp_server/server.py
+          │              │  Servidor MCP      │  mcp_server/server.py
           │              └─────────┬──────────┘
           │                        │ HTTP
           ▼                        ▼
    ┌───────────────────────────────────────────┐
-   │        App Scala / Play (controllers)       │
-   │   vistas HTML  +  API REST JSON /api/*      │
+   │        App Scala / Play (controllers)     │
+   │   vistas HTML  +  API REST JSON /api/*    │
    └─────────────────────┬─────────────────────┘
                          │ HTTP
                          ▼
                   ┌──────────────┐
-                  │   PokéAPI v2  │
+                  │  PokéAPI v2  │
                   └──────────────┘
 ```
 
