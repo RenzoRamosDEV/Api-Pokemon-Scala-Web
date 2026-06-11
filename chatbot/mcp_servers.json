@@ -1,0 +1,10 @@
+{
+  "servers": [
+    {
+      "name": "pokemon",
+      "command": "/home/renzo-ramos/Workspace/Scala/poke-api-scala-web/chatbot/.venv/bin/python",
+      "args": ["/home/renzo-ramos/Workspace/Scala/poke-api-scala-web/mcp_server/server.py"],
+      "env": { "SCALA_APP_URL": "http://localhost:9000" }
+    }
+  ]
+}
