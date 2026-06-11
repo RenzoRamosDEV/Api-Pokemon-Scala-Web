@@ -122,8 +122,8 @@ integración: **[docs/IMPLEMENTACION-REACT-MCP.md](docs/IMPLEMENTACION-REACT-MCP
 ### Backend + Pokédex web
 
 ```bash
-git clone https://github.com/RenzoRamosDEV/Api-Pokemon-Scala-Web.git
-cd Api-Pokemon-Scala-Web
+git clone https://github.com/RenzoRamosDEV/Api-Pokemon-Scala-Web-IA-MCP.git
+cd Api-Pokemon-Scala-Web-IA-MCP
 sbt run
 ```
 
