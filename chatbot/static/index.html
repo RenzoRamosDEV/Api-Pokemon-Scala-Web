@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokemon ReAct Agent</title>
+  <!-- Fuentes retro: Press Start 2P (chrome/títulos) + VT323 (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <!-- Markdown -> HTML (las respuestas traen **negritas**, sprites, listas) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    /* ============================================================
+       TEMAS — mismas paletas y cuadrícula que la web Pokédex.
+       Cada tema redefine las variables; el resto usa var(--x).
+       ============================================================ */
+    :root, body[data-theme="normal"] {
+      --bg:#1a2e1a; --fg:#f5f0e8; --muted:#9ab59a; --line:#0d0d0d;
+      --bar-bg:#cc2200; --bar-fg:#f5f0e8;
+      --bot-bg:#f5f0e8; --bot-fg:#0d0d0d;
+      --user-bg:#991a00; --user-fg:#f5f0e8;
+      --panel-bg:#0d0d0d; --panel-fg:#aaaaaa; --active:#f5c400;
+      --grid:rgba(0,170,68,0.05); --grid-size:32px;
+    }
+    body[data-theme="gb"] {
+      --bg:#9bbc0f; --fg:#0f380f; --muted:#306230; --line:#0f380f;
+      --bar-bg:#0f380f; --bar-fg:#9bbc0f;
+      --bot-bg:#c4de7d; --bot-fg:#0f380f;
+      --user-bg:#306230; --user-fg:#e8f5c0;
+      --panel-bg:#0f380f; --panel-fg:#8bac0f; --active:#9bbc0f;
+      --grid:rgba(15,56,15,0.12); --grid-size:8px;
+    }
+    body[data-theme="gray"] {
+      --bg:#d0d0d0; --fg:#111; --muted:#666; --line:#111;
+      --bar-bg:#222; --bar-fg:#eee;
+      --bot-bg:#f0f0f0; --bot-fg:#111;
+      --user-bg:#222; --user-fg:#eee;
+      --panel-bg:#222; --panel-fg:#aaa; --active:#fff;
+      --grid:rgba(0,0,0,0.06); --grid-size:8px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      /* Fondo de color + cuadrícula (como la web) */
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      color: var(--fg);
+      font-family: 'VT323', monospace;
+      display: flex; flex-direction: column; height: 100vh;
+    }
+
+    /* ---- Cabecera ---- */
+    header {
+      background: var(--bar-bg); color: var(--bar-fg);
+      border-bottom: 3px solid var(--line); box-shadow: 0 4px 0 rgba(0,0,0,0.35);
+      padding: 10px 16px; display: flex; align-items: center; gap: 14px;
+      position: relative; z-index: 5;
+    }
+    header h1 {
+      font-family: 'Press Start 2P', monospace; font-size: 0.78rem;
+      margin: 0; letter-spacing: 1px; text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    }
+    header .meta { font-family: 'VT323', monospace; font-size: 15px; color: var(--bar-fg); opacity: .8; }
+    .controls { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+    /* Botón icono cuadrado, estilo .theme-cycle-btn de la web */
+    .icon-btn {
+      width: 36px; height: 36px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; color: var(--bar-fg);
+      border: 2px solid currentColor; box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+      cursor: pointer; transition: background 80ms, color 80ms;
+    }
+    .icon-btn:hover { background: var(--bar-fg); color: var(--bar-bg); }
+    .icon-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0; }
+
+    /* Botón de texto retro (NUEVO) */
+    .hbtn {
+      font-family: 'Press Start 2P', monospace; font-size: 0.42rem;
+      background: transparent; color: var(--bar-fg);
+      border: 2px solid currentColor; box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+      padding: 0 12px; height: 36px; cursor: pointer; letter-spacing: 1px;
+      transition: background 80ms, color 80ms;
+    }
+    .hbtn:hover { background: var(--bar-fg); color: var(--bar-bg); }
+    .hbtn:active { transform: translate(2px, 2px); box-shadow: 0 0 0; }
+
+    /* ---- Selector de tema ---- */
+    .theme-wrap { position: relative; }
+    .dropdown {
+      position: absolute; right: 0; top: calc(100% + 6px); z-index: 20;
+      background: var(--panel-bg); border: 3px solid var(--line);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.6); min-width: 96px;
+      display: flex; flex-direction: column;
+    }
+    .dropdown[hidden] { display: none; }
+    .theme-option {
+      font-family: 'Press Start 2P', monospace; font-size: 0.42rem;
+      display: block; width: 100%; text-align: left; background: transparent;
+      color: var(--panel-fg); border: none; border-bottom: 1px solid rgba(128,128,128,0.3);
+      padding: 11px 12px; cursor: pointer; letter-spacing: 1px; white-space: nowrap;
+      transition: background 80ms, color 80ms;
+    }
+    .theme-option:last-child { border-bottom: none; }
+    .theme-option:hover { color: var(--active); }
+    .theme-option.active { color: var(--active); }
+
+    /* ---- Lista de mensajes ---- */
+    #chat { flex: 1; overflow-y: auto; padding: 18px; }
+    .row { display: flex; margin-bottom: 16px; }
+    .row.user { justify-content: flex-end; }
+    .bubble {
+      max-width: 78%; border: 2px solid var(--line); box-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+      padding: 8px 12px; font-size: 18px; line-height: 1.35; word-wrap: break-word;
+    }
+    .row.user .bubble { background: var(--user-bg); color: var(--user-fg); }
+    .row.bot  .bubble { background: var(--bot-bg); color: var(--bot-fg); }
+    .bubble p { margin: 0 0 6px; }
+    .bubble p:last-child { margin-bottom: 0; }
+    .bubble img { max-width: 96px; display: block; margin: 6px 0; image-rendering: pixelated; }
+    /* Los sprites se tiñen según el tema, igual que en la web Pokédex */
+    body[data-theme="gb"]   .bubble img { filter: sepia(1) hue-rotate(60deg) saturate(0.6) brightness(0.7); }
+    body[data-theme="gray"] .bubble img { filter: grayscale(1) brightness(0.85); }
+    .bubble a { color: inherit; }
+    .bubble code { font-family: 'Courier New', monospace; font-size: 13px; background: rgba(0,0,0,0.12); padding: 1px 4px; }
+
+    /* ---- Flujo ReAct (plegable). Monospace para el JSON. ---- */
+    .flow {
+      border-left: 3px solid var(--bot-fg); margin: 0 0 8px; padding: 2px 0 2px 10px;
+      font-family: 'Courier New', monospace; font-size: 11px; color: var(--bot-fg);
+      line-height: 1.5; cursor: pointer;
+    }
+    .flow:empty { display: none; }
+    .step { margin: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .flow.expanded .step { white-space: pre-wrap; word-break: break-word; overflow: visible; }
+    .step.thought { font-style: italic; opacity: .75; }
+    .step.act { opacity: 1; }
+    .step.obs { opacity: .55; }
+    .flow-hint {
+      font-family: 'Courier New', monospace; font-size: 10px; color: var(--bot-fg);
+      opacity: .5; margin-top: 3px; cursor: pointer; user-select: none;
+    }
+    .flow:empty + .flow-hint { display: none; }
+    .answer:empty { display: none; }
+
+    /* cursor parpadeante mientras razona */
+    .cursor::after { content: " ▮"; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ---- Caja de entrada ---- */
+    form { display: flex; background: var(--bar-bg); border-top: 3px solid var(--line); }
+    #msg {
+      flex: 1; border: none; padding: 12px 16px; font-family: 'VT323', monospace;
+      font-size: 20px; outline: none; background: transparent; color: var(--bar-fg);
+    }
+    #msg::placeholder { color: var(--bar-fg); opacity: .55; }
+    #send {
+      font-family: 'Press Start 2P', monospace; font-size: 0.5rem;
+      border: none; border-left: 3px solid var(--line);
+      background: transparent; color: var(--bar-fg);
+      padding: 0 22px; cursor: pointer; letter-spacing: 1px;
+    }
+    #send:hover:not(:disabled) { background: var(--bar-fg); color: var(--bar-bg); }
+    #send:disabled { opacity: .5; cursor: default; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>POKEMON ReAct</h1>
+    <span class="meta" id="meta">conectando…</span>
+    <div class="controls">
+      <div class="theme-wrap">
+        <!-- Icono de contraste (círculo medio relleno), igual que la web -->
+        <button id="theme-btn" class="icon-btn" title="Cambiar tema">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"
+               fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor" stroke="none"/>
+            <line x1="12" y1="2" x2="12" y2="22"/>
+          </svg>
+        </button>
+        <div id="theme-dropdown" class="dropdown" hidden>
+          <button class="theme-option" data-value="normal">NORMAL</button>
+          <button class="theme-option" data-value="gb">DMG</button>
+          <button class="theme-option" data-value="gray">MONO</button>
+        </div>
+      </div>
+      <button id="reset" class="hbtn" title="Nueva conversación">NUEVO</button>
+    </div>
+  </header>
+
+  <div id="chat"></div>
+
+  <form id="form" autocomplete="off">
+    <input id="msg" name="msg" placeholder="Escribe tu pregunta sobre Pokemon…" autofocus />
+    <button id="send" type="submit">ENVIAR</button>
+  </form>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const form = document.getElementById("form");
+    const input = document.getElementById("msg");
+    const send = document.getElementById("send");
+
+    /* ---------- Historial persistente (sobrevive al refresco) ---------- */
+    const HISTORY_KEY = "chat-history";
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); } catch { history = []; }
+    const saveHistory = () => localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+
+    /* ---------- Temas (persisten en localStorage, igual que la web) ---------- */
+    const themeBtn = document.getElementById("theme-btn");
+    const themeDrop = document.getElementById("theme-dropdown");
+    function applyTheme(t) {
+      document.body.dataset.theme = t;
+      localStorage.setItem("chat-theme", t);
+      document.querySelectorAll(".theme-option").forEach(o =>
+        o.classList.toggle("active", o.dataset.value === t));
+    }
+    applyTheme(localStorage.getItem("chat-theme") || "normal");
+    themeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      themeDrop.hidden = !themeDrop.hidden;
+    });
+    document.querySelectorAll(".theme-option").forEach(o =>
+      o.addEventListener("click", () => { applyTheme(o.dataset.value); themeDrop.hidden = true; }));
+    document.addEventListener("click", () => { themeDrop.hidden = true; });
+
+    /* ---------- Burbujas ---------- */
+    function addBubble(text, who) {
+      const row = document.createElement("div");
+      row.className = "row " + who;
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
+      return row;
+    }
+
+    // Burbuja del bot con dos zonas: .flow (razonamiento) y .answer (respuesta).
+    function addBotBubble() {
+      const row = document.createElement("div");
+      row.className = "row bot";
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      const flow = document.createElement("div");
+      flow.className = "flow cursor";
+      const hint = document.createElement("div");
+      hint.className = "flow-hint";
+      hint.textContent = "▸ clic para ver el flujo completo";
+      const toggle = () => {
+        const open = flow.classList.toggle("expanded");
+        hint.textContent = open ? "▾ clic para encoger" : "▸ clic para ver el flujo completo";
+      };
+      flow.addEventListener("click", toggle);
+      hint.addEventListener("click", toggle);
+      const answer = document.createElement("div");
+      answer.className = "answer";
+      bubble.append(flow, hint, answer);
+      row.appendChild(bubble);
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
+      return { flow, answer };
+    }
+
+    const ICON = { thought: "💭", act: "⚡", observation: "👁️" };
+
+    // Añade un paso del flujo (texto COMPLETO; el truncado lo hace el CSS).
+    function addStep(flow, kind, text) {
+      const cls = kind === "observation" ? "obs" : kind;
+      const div = document.createElement("div");
+      div.className = "step " + cls;
+      div.textContent = `${ICON[kind]} ${text.trim()}`;
+      flow.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // Pinta una respuesta de bot ya completa (usado al restaurar el historial).
+    function renderBot(answerText, steps) {
+      const { flow, answer } = addBotBubble();
+      flow.classList.remove("cursor");
+      (steps || []).forEach(s => addStep(flow, s.type, s.text));
+      answer.innerHTML = marked.parse(answerText || "");
+    }
+
+    // Repinta toda la conversación guardada al cargar la página.
+    function restoreHistory() {
+      history.forEach(m => {
+        if (m.role === "user") addBubble(m.text, "user");
+        else renderBot(m.answer, m.steps);
+      });
+    }
+
+    /* ---------- Cabecera: info MCP ---------- */
+    fetch("/info").then(r => r.json()).then(d => {
+      document.getElementById("meta").textContent =
+        `MCP: ${d.servers.join(", ")} · ${d.tools} herramientas`;
+    }).catch(() => { document.getElementById("meta").textContent = "sin conexión"; });
+
+    /* ---------- Envío + streaming SSE ---------- */
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addBubble(text, "user");
+      history.push({ role: "user", text });
+      saveHistory();
+      input.value = "";
+      send.disabled = true;
+
+      const { flow, answer } = addBotBubble();
+      const steps = [];          // pasos del flujo para guardar en el historial
+      let answerText = "";
+
+      try {
+        const res = await fetch("/chat/stream", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+        });
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const parts = buffer.split("\n\n");
+          buffer = parts.pop();
+          for (const part of parts) {
+            const line = part.replace(/^data: /, "").trim();
+            if (!line) continue;
+            const ev = JSON.parse(line);
+            if (ev.type === "answer") {
+              flow.classList.remove("cursor");
+              answerText = ev.text || "(sin respuesta)";
+              answer.innerHTML = marked.parse(answerText);
+            } else if (ev.type === "error") {
+              flow.classList.remove("cursor");
+              answerText = "❌ Error: " + ev.text;
+              answer.textContent = answerText;
+            } else {
+              addStep(flow, ev.type, ev.text);
+              steps.push({ type: ev.type, text: ev.text });
+            }
+          }
+        }
+        flow.classList.remove("cursor");
+      } catch (err) {
+        flow.classList.remove("cursor");
+        answerText = "❌ Error: " + err;
+        answer.textContent = answerText;
+      } finally {
+        // Guarda la respuesta del bot (con su flujo) en el historial.
+        history.push({ role: "bot", answer: answerText, steps });
+        saveHistory();
+        send.disabled = false;
+        input.focus();
+      }
+    });
+
+    document.getElementById("reset").addEventListener("click", async () => {
+      await fetch("/reset", { method: "POST" });   // limpia el historial del servidor
+      history = [];
+      saveHistory();
+      chat.innerHTML = "";
+      input.focus();
+    });
+
+    // Restaura la conversación guardada al abrir/refrescar la página.
+    restoreHistory();
+  </script>
+</body>
+</html>
