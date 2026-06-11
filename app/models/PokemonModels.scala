@@ -20,6 +20,11 @@ case class Pokemon(
   sprites: Sprites
 )
 
+// Formatos spray-json para Pokémon. Cada formato tiene DOS direcciones:
+//   read  -> deserializa la respuesta (anidada) de PokéAPI a la case class.
+//   write -> serializa la case class a un JSON plano para nuestros endpoints /api/*
+//            (lo que consume el agente MCP). El `read` se usa en los controladores
+//            web y de API; el `write` solo en las acciones apiIndex.
 object PokemonModels extends DefaultJsonProtocol {
   implicit val namedResourceFmt: RootJsonFormat[NamedResource] = jsonFormat2(NamedResource.apply)
   implicit val paginatedFmt: RootJsonFormat[PaginatedResponse]  = jsonFormat2(PaginatedResponse.apply)
@@ -77,7 +82,25 @@ object PokemonModels extends DefaultJsonProtocol {
   }
 
   implicit val pokemonFmt: RootJsonFormat[Pokemon] = new RootJsonFormat[Pokemon] {
-    def write(p: Pokemon): JsValue = JsObject()
+    // `write` produce un JSON plano y limpio, pensado para consumo por el agente
+    // LLM (vía /api/pokemon), NO el formato anidado de PokéAPI que lee `read`.
+    //   - types:     array de nombres ordenado por slot          -> ["ghost","poison"]
+    //   - abilities: lista {name, isHidden} ordenada por slot
+    //   - stats:     objeto nombre->valor base                   -> {"hp":60, ...}
+    //   - baseExperience/sprite: Option -> valor o null (vía .toJson)
+    def write(p: Pokemon): JsValue = JsObject(
+      "id"             -> JsNumber(p.id),
+      "name"           -> JsString(p.name),
+      "types"          -> p.types.sortBy(_.slot).map(_.typeName).toJson,
+      "abilities"      -> p.abilities.sortBy(_.slot).map { a =>
+        JsObject("name" -> JsString(a.name), "isHidden" -> JsBoolean(a.isHidden))
+      }.toJson,
+      "stats"          -> JsObject(p.stats.map(s => s.name -> JsNumber(s.baseStat)).toMap),
+      "height"         -> JsNumber(p.height),
+      "weight"         -> JsNumber(p.weight),
+      "baseExperience" -> p.baseExperience.toJson,
+      "sprite"         -> p.sprites.frontDefault.toJson
+    )
     def read(v: JsValue): Pokemon = {
       val obj = v.asJsObject.fields
       Pokemon(
