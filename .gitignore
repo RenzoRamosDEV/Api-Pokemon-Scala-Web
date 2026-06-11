@@ -7,3 +7,6 @@ project/project/target/
 *.class
 *.tasty
 logs/
+
+# Claude Code
+.claude/

@@ -65,9 +65,14 @@ case class GameType(
   pokemonCount: Int
 )
 
+// Formatos spray-json del resto de entidades del juego (Move, Ability, Nature,
+// Item, Berry, GameType). Igual que PokemonModels: `read` parsea PokéAPI y
+// `write` emite el JSON plano de /api/* para el agente MCP.
 object GameModels extends DefaultJsonProtocol {
   import PokemonModels.namedResourceFmt
 
+  // Aplana una relación de NamedResource a una lista de nombres.
+  // Ej: damage_relations.double_damage_to -> ["water","ground","rock"]
   private def namedList(v: JsValue, key: String): List[String] =
     v.asJsObject.fields
       .get(key)
@@ -75,8 +80,33 @@ object GameModels extends DefaultJsonProtocol {
       .flatMap(_.convertTo[List[NamedResource]])
       .map(_.name)
 
+  /** Extrae el `short_effect` en inglés de `effect_entries`. PokéAPI devuelve
+    * entradas en varios idiomas; preferimos la inglesa y, si no existe, la
+    * primera disponible. */
+  private def englishShortEffect(fields: Map[String, JsValue]): String = {
+    val entries = fields.get("effect_entries").toList.flatMap(_.convertTo[List[JsValue]])
+    def isEnglish(e: JsValue): Boolean =
+      e.asJsObject.fields.get("language")
+        .flatMap(_.asJsObject.fields.get("name"))
+        .contains(JsString("en"))
+    entries.find(isEnglish).orElse(entries.headOption)
+      .flatMap(_.asJsObject.fields.get("short_effect"))
+      .collect { case JsString(s) => s }
+      .getOrElse("")
+  }
+
   implicit val moveFmt: RootJsonFormat[Move] = new RootJsonFormat[Move] {
-    def write(m: Move): JsValue = JsObject()
+    def write(m: Move): JsValue = JsObject(
+      "id"          -> JsNumber(m.id),
+      "name"        -> JsString(m.name),
+      "power"       -> m.power.toJson,
+      "accuracy"    -> m.accuracy.toJson,
+      "pp"          -> JsNumber(m.pp),
+      "priority"    -> JsNumber(m.priority),
+      "damageClass" -> JsString(m.damageClass),
+      "moveType"    -> JsString(m.moveType),
+      "shortEffect" -> JsString(m.shortEffect)
+    )
     def read(v: JsValue): Move = {
       val obj = v.asJsObject.fields
       Move(
@@ -88,32 +118,38 @@ object GameModels extends DefaultJsonProtocol {
         power       = obj.get("power").collect { case JsNumber(n) => n.toInt },
         damageClass = obj("damage_class").asJsObject.fields("name").convertTo[String],
         moveType    = obj("type").asJsObject.fields("name").convertTo[String],
-        shortEffect = obj.get("effect_entries").flatMap(_.convertTo[List[JsValue]].headOption)
-          .flatMap(_.asJsObject.fields.get("short_effect"))
-          .collect { case JsString(s) => s }
-          .getOrElse("")
+        shortEffect = englishShortEffect(obj)
       )
     }
   }
 
   implicit val abilityFmt: RootJsonFormat[Ability] = new RootJsonFormat[Ability] {
-    def write(a: Ability): JsValue = JsObject()
+    def write(a: Ability): JsValue = JsObject(
+      "id"           -> JsNumber(a.id),
+      "name"         -> JsString(a.name),
+      "shortEffect"  -> JsString(a.shortEffect),
+      "pokemonCount" -> JsNumber(a.pokemonCount)
+    )
     def read(v: JsValue): Ability = {
       val obj = v.asJsObject.fields
       Ability(
         id           = obj("id").convertTo[Int],
         name         = obj("name").convertTo[String],
-        shortEffect  = obj.get("effect_entries").flatMap(_.convertTo[List[JsValue]].headOption)
-          .flatMap(_.asJsObject.fields.get("short_effect"))
-          .collect { case JsString(s) => s }
-          .getOrElse(""),
+        shortEffect  = englishShortEffect(obj),
         pokemonCount = obj.get("pokemon").map(_.convertTo[List[JsValue]].length).getOrElse(0)
       )
     }
   }
 
   implicit val natureFmt: RootJsonFormat[Nature] = new RootJsonFormat[Nature] {
-    def write(n: Nature): JsValue = JsObject()
+    def write(n: Nature): JsValue = JsObject(
+      "id"            -> JsNumber(n.id),
+      "name"          -> JsString(n.name),
+      "increasedStat" -> n.increasedStat.toJson,
+      "decreasedStat" -> n.decreasedStat.toJson,
+      "hatesFlavor"   -> n.hatesFlavor.toJson,
+      "likesFlavor"   -> n.likesFlavor.toJson
+    )
     def read(v: JsValue): Nature = {
       val obj = v.asJsObject.fields
       def optName(key: String): Option[String] =
@@ -130,7 +166,14 @@ object GameModels extends DefaultJsonProtocol {
   }
 
   implicit val itemFmt: RootJsonFormat[Item] = new RootJsonFormat[Item] {
-    def write(i: Item): JsValue = JsObject()
+    def write(i: Item): JsValue = JsObject(
+      "id"          -> JsNumber(i.id),
+      "name"        -> JsString(i.name),
+      "cost"        -> JsNumber(i.cost),
+      "category"    -> JsString(i.category),
+      "sprite"      -> i.sprite.toJson,
+      "shortEffect" -> JsString(i.shortEffect)
+    )
     def read(v: JsValue): Item = {
       val obj = v.asJsObject.fields
       Item(
@@ -139,16 +182,16 @@ object GameModels extends DefaultJsonProtocol {
         cost        = obj("cost").convertTo[Int],
         category    = obj("category").asJsObject.fields("name").convertTo[String],
         sprite      = obj.get("sprites").flatMap(_.asJsObject.fields.get("default")).collect { case JsString(s) => s },
-        shortEffect = obj.get("effect_entries").flatMap(_.convertTo[List[JsValue]].headOption)
-          .flatMap(_.asJsObject.fields.get("short_effect"))
-          .collect { case JsString(s) => s }
-          .getOrElse("")
+        shortEffect = englishShortEffect(obj)
       )
     }
   }
 
   implicit val berryFlavorFmt: RootJsonFormat[BerryFlavorMap] = new RootJsonFormat[BerryFlavorMap] {
-    def write(b: BerryFlavorMap): JsValue = JsObject()
+    def write(b: BerryFlavorMap): JsValue = JsObject(
+      "flavor"  -> JsString(b.flavor),
+      "potency" -> JsNumber(b.potency)
+    )
     def read(v: JsValue): BerryFlavorMap = {
       val obj = v.asJsObject.fields
       BerryFlavorMap(
@@ -159,7 +202,17 @@ object GameModels extends DefaultJsonProtocol {
   }
 
   implicit val berryFmt: RootJsonFormat[Berry] = new RootJsonFormat[Berry] {
-    def write(b: Berry): JsValue = JsObject()
+    def write(b: Berry): JsValue = JsObject(
+      "id"               -> JsNumber(b.id),
+      "name"             -> JsString(b.name),
+      "growthTime"       -> JsNumber(b.growthTime),
+      "maxHarvest"       -> JsNumber(b.maxHarvest),
+      "naturalGiftPower" -> JsNumber(b.naturalGiftPower),
+      "naturalGiftType"  -> JsString(b.naturalGiftType),
+      "smoothness"       -> JsNumber(b.smoothness),
+      "firmness"         -> JsString(b.firmness),
+      "flavors"          -> b.flavors.toJson
+    )
     def read(v: JsValue): Berry = {
       val obj = v.asJsObject.fields
       Berry(
@@ -177,7 +230,17 @@ object GameModels extends DefaultJsonProtocol {
   }
 
   implicit val gameTypeFmt: RootJsonFormat[GameType] = new RootJsonFormat[GameType] {
-    def write(t: GameType): JsValue = JsObject()
+    def write(t: GameType): JsValue = JsObject(
+      "id"               -> JsNumber(t.id),
+      "name"             -> JsString(t.name),
+      "doubleDamageTo"   -> t.doubleDamageTo.toJson,
+      "halfDamageTo"     -> t.halfDamageTo.toJson,
+      "noDamageTo"       -> t.noDamageTo.toJson,
+      "doubleDamageFrom" -> t.doubleDamageFrom.toJson,
+      "halfDamageFrom"   -> t.halfDamageFrom.toJson,
+      "noDamageFrom"     -> t.noDamageFrom.toJson,
+      "pokemonCount"     -> JsNumber(t.pokemonCount)
+    )
     def read(v: JsValue): GameType = {
       val obj = v.asJsObject.fields
       val dmg = obj("damage_relations").asJsObject
